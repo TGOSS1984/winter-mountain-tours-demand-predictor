@@ -126,9 +126,61 @@ At least one ML task (regression for bookings and classification for cancellatio
 
 ---
 
-## 3. Project Hypotheses & Validation Plan  <!-- Merit, Distinction -->
+## 3. Project Hypotheses & Validation Plan
 
-*(To be completed in 1.5)*
+The following hypotheses are defined to guide the analysis and modelling. They will be validated using a combination
+of exploratory data analysis, statistical summaries and model-based feature importance.
+
+### H1: Holidays increase bookings in winter regions
+
+> **Hypothesis H1:** School and bank holiday periods significantly increase bookings in core regions (e.g. Lake District, Snowdonia).
+
+**Validation approach:**
+
+- Compare average weekly bookings in holiday weeks vs non-holiday weeks.
+- Plot bookings by week with holiday periods highlighted.
+- Inspect regression model feature importance / SHAP values for holiday-related features.
+
+**Expected actionability:**
+
+If H1 holds, Operations and Marketing can treat holiday weeks as “critical weeks” for staffing, capacity and pricing strategy.
+
+---
+
+### H2: Severe weather increases cancellations independent of season
+
+> **Hypothesis H2:** Severe weather conditions (e.g. high wind, heavy precipitation, poor visibility) are associated with higher cancellation rates, even after accounting for season.
+
+**Validation approach:**
+
+- Group bookings by weather severity bins and compute cancellation rates.
+- Use a bar plot or line plot of cancellation rate vs weather bin.
+- Inspect classification model feature importance / SHAP values for weather-related features.
+
+**Expected actionability:**
+
+If H2 holds, Customer Service can prioritise reminders and contingency planning for high-risk weather weeks, regardless of whether they fall in peak winter season.
+
+---
+
+### H3: Lagged demand is the strongest single predictor of next week’s bookings
+
+> **Hypothesis H3:** Lag features (e.g. bookings at t-1 and t-52) provide more predictive power for weekly bookings than any single calendar or weather feature.
+
+**Validation approach:**
+
+- Compare model performance with and without lag features.
+- Inspect feature importance rankings for the final regression model.
+- Optionally, use partial dependence / SHAP plots for lag features.
+
+**Expected actionability:**
+
+If H3 holds, the business can rely on recent demand as a strong signal for next week’s planning, and combine it with holidays and weather for fine-tuning.
+
+---
+
+These hypotheses and validation steps will be revisited in the Modelling and EDA sections. Final conclusions, including whether each hypothesis is supported or not, will be documented once the models are evaluated (Merit criteria 1.2, 2.3, 4.3; Distinction requirement for multiple hypotheses).
+
 
 ---
 
