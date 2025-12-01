@@ -72,19 +72,57 @@ These KPIs will be used later to determine whether the ML pipeline has met the b
 
 ---
 
-## 2. Business Requirements & User Stories  <!-- LO2 -->
+## 2. Business Requirements & User Stories
 
 ### 2.1 User Stories
 
-*(To be completed in 1.3)*
+**Operations Lead**
+
+- As an Operations Lead, I want a **weekly bookings forecast per region**, so that I can roster the right number of guides in advance.
+- As an Operations Lead, I want to **see the impact of holidays and weather on demand**, so that I can anticipate peak and low periods.
+
+**Guides / Route Leaders**
+
+- As a Guide, I want to **see expected tour volumes in my region**, so that I can plan my availability and travel.
+
+**Marketing**
+
+- As a Marketing Manager, I want to **identify weeks where demand is below normal**, so that I can plan promotions or discounts.
+- As a Marketing Manager, I want to **understand which factors drive bookings**, so that I can tailor campaigns (e.g. around holidays).
+
+**Customer Service**
+
+- As a Customer Service agent, I want a **cancellation risk score for each upcoming booking**, so that I can prioritise reminder emails or calls for high-risk tours.
 
 ### 2.2 Business Requirements
 
-*(To be completed in 1.3)*
+From the user stories, the key business requirements are:
 
-### 2.3 Mapping BR → Visualisations & ML Tasks
+- **BR1 – Weekly bookings forecast per region**  
+  The system must provide a forecast of total weekly bookings for each region (e.g. Lake District, Snowdonia, Highlands).
 
-*(To be completed in 1.3)*
+- **BR2 – Cancellation risk prediction**  
+  The system must provide a probability that a given booking will be cancelled, based on attributes like region, lead time and forecast weather.
+
+- **BR3 – Explain drivers of demand and cancellations**  
+  The dashboard must show how calendar features (e.g. bank holidays, school holidays, peak winter) and weather conditions relate to bookings and cancellations.
+
+- **BR4 – Interactive dashboard for non-technical users**  
+  The solution must expose the models via an easy-to-use Streamlit dashboard with clear navigation, text explanations and plot interpretations.
+
+### 2.3 Mapping Business Requirements to Visualisations & ML Tasks
+
+The table below maps each business requirement to specific data visualisations and ML tasks that will be implemented in the notebooks and Streamlit app.
+
+| BR | Description                               | Visualisations (EDA / Dashboard)                                          | ML Task(s)                                   |
+|----|-------------------------------------------|---------------------------------------------------------------------------|----------------------------------------------|
+| BR1 | Weekly bookings forecast per region       | Time series plots of weekly bookings by region; heatmap of week × region; holiday vs non-holiday comparison | **Regression model** predicting weekly bookings per region using calendar, weather and lag features |
+| BR2 | Cancellation risk prediction              | Cancellation rate by region and season; cancellation rate by weather bins | **Classification model** predicting `was_cancelled` at booking level |
+| BR3 | Explain drivers of demand & cancellations | Correlation/feature importance plots; bar charts for holiday uplift; SHAP or feature importance charts | Use model feature importance / coefficients and partial dependence to interpret drivers of bookings and cancellations |
+| BR4 | Interactive dashboard for stakeholders    | Streamlit pages with region filters, date/threshold sliders, and textual interpretations under each plot | Integration of trained models into a Streamlit app with user inputs and prediction outputs |
+
+At least one ML task (regression for bookings and classification for cancellations) is explicitly defined and linked to the business requirements and visualisations, satisfying the rationale mapping requirement (LO2.1, LO2.2, LO3.2).
+
 
 ---
 
