@@ -140,7 +140,58 @@ At least one ML task (regression for bookings and classification for cancellatio
 
 ## 5. Modelling & Evaluation
 
-*(Will be filled after modelling)*
+### 5.1 ML Business Case – Weekly Bookings Forecast (Regression)
+
+- **Aim**  
+  Predict the total number of bookings per region per week, to support capacity and staffing planning.
+
+- **Learning method**  
+  Supervised regression using historical weekly bookings with calendar, weather and lag features.
+
+- **Inputs (features)**  
+  - Region (categorical)
+  - Week start date and derived calendar features (week number, month, is_peak_winter, bank holiday flags, school holiday flags)
+  - Aggregated weather features (mean temperature, snowfall flag, precipitation, wind, visibility)
+  - Lag features (e.g. bookings at t-1, t-52 and rolling averages)
+
+- **Output (target)**  
+  - `bookings_count` – number of bookings in the region for the given week.
+
+- **Success metrics**  
+  - Primary: MAE and MAPE on the test set.
+  - Secondary: R² on test set and visual inspection of Actual vs Predicted and residual plots.
+
+- **Relevance for the user**  
+  The forecast allows the Operations Lead to roster guides and allocate capacity with less guesswork. Lower error means fewer weeks with over- or under-staffing.
+
+### 5.2 ML Business Case – Cancellation Risk (Classification)
+
+- **Aim**  
+  Predict the probability that an individual booking will be cancelled, so that Customer Service can prioritise proactive communication and reminders.
+
+- **Learning method**  
+  Supervised binary classification using booking attributes, calendar and weather features.
+
+- **Inputs (features)**  
+  - Region
+  - Lead time (days between booking date and tour date)
+  - Party size
+  - Calendar features (week number, month, holiday flags, is_peak_winter)
+  - Forecast / typical weather features for the tour date (e.g. severe weather flags or bins)
+
+- **Output (target)**  
+  - Binary label `was_cancelled` (1 = cancelled, 0 = attended).
+
+- **Success metrics**  
+  - Primary: ROC AUC on test set.
+  - Operational: Recall at a chosen decision threshold (focus on catching as many true cancellations as possible among high-risk bookings).
+  - Supporting: Confusion matrix and classification report at the chosen threshold.
+
+- **Relevance for the user**  
+  The cancellation risk score enables targeted reminders (SMS/email) for high-risk bookings, which can reduce no-shows and improve customer experience.
+
+Detailed modelling steps, hyperparameter tuning and evaluation plots will be implemented in dedicated Jupyter Notebooks (regression and classification). Each notebook will include an Objectives/Inputs/Outputs section at the top, as required by LO5.5.
+
 
 ---
 
