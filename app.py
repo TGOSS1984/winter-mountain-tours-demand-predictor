@@ -1,5 +1,15 @@
 import streamlit as st
 
+from app_pages.multipage import MultiPage
+from app_pages import (
+    page_home,
+    page_eda,
+    page_forecast,
+    page_cancellation,
+    page_report,
+)
+
+
 def main():
     st.set_page_config(
         page_title="Winter Mountain Tours – Predictive Analytics",
@@ -7,20 +17,19 @@ def main():
         layout="wide",
     )
 
-    st.title("Winter Mountain Tour Demand & Cancellation Predictor")
-    st.markdown(
-        """
-        This app will forecast **weekly bookings** for each mountain region
-        and predict **cancellation risk** for upcoming tours.
+    app = MultiPage(app_name="Winter Mountain Tour Demand & Cancellation Predictor")
 
-        Phase 0: ✅ Project scaffolded  
-        Next steps: add **business understanding**, data design, and EDA.
-        """
-    )
+    # Register pages
+    app.add_page("Home / Project Summary", page_home.app)
+    app.add_page("EDA & Insights", page_eda.app)
+    app.add_page("Bookings Forecast", page_forecast.app)
+    app.add_page("Cancellation Risk", page_cancellation.app)
+    app.add_page("Model Report", page_report.app)
 
-    st.info(
-        "App scaffolded successfully. Use `streamlit run app.py` to view it locally."
-    )
+    # Run app
+    app.run()
+
 
 if __name__ == "__main__":
     main()
+
