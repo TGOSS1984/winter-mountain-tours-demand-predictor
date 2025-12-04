@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 from xgboost import XGBModel
 
 from src import data_loaders, evaluate, visualize
+from src.ui import inject_global_css
 
 
 def _ensure_xgb_gpu_id(model):
@@ -25,6 +26,8 @@ def _ensure_xgb_gpu_id(model):
 
 
 def app():
+    inject_global_css()
+    
     st.title("Model Report")
 
     st.markdown(

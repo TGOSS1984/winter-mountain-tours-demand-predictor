@@ -12,6 +12,17 @@ def inject_global_css() -> None:
     st.markdown(
         """
         <style>
+        
+        /* Sidebar (navigation bar) background */
+        section[data-testid="stSidebar"] {
+            background-color: #404e64 !important;
+        }
+
+        /* Sidebar text contrast */
+        section[data-testid="stSidebar"] * {
+            color: #ffffff !important;
+        }
+
         /* Make the main content a bit wider and less cramped */
         .block-container {
             padding-top: 1.5rem;

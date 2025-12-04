@@ -4,9 +4,12 @@ import streamlit as st
 import pandas as pd
 
 from src import data_loaders
+from src.ui import inject_global_css
 
 
 def app():
+    inject_global_css()
+    
     st.title("Data & Documentation")
 
     st.markdown(

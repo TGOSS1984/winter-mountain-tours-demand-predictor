@@ -4,29 +4,30 @@ import streamlit as st
 import pandas as pd
 
 from src import data_loaders, models, features
+from src.ui import inject_global_css
 
 
 def _get_calendar_row_for_date(tour_date: pd.Timestamp):
-    """
-    Find the calendar fields (year, week_number, month, holiday flags)
-    for a given tour date, using the weekly regression dataset.
-    """
     weekly = data_loaders.load_weekly_regression_data()
-
     week_start = tour_date - pd.to_timedelta(tour_date.weekday(), unit="D")
-    # Use first region's row for that week as calendar proxy
     row = weekly[weekly["week_start"] == week_start].iloc[0]
     return row
 
 
 def app():
-    st.title("Cancellation Risk")
+    inject_global_css()
+
+    st.title("⚠️ Cancellation Risk")
 
     st.markdown(
         """
-        Estimate **cancellation risk** for a single upcoming booking. This uses the
-        trained classification model and returns a probability plus a high/low risk flag.
-        """
+        <div class="card">
+        Estimate <strong>cancellation risk</strong> for a single upcoming booking using the
+        trained classification model. The result is a probability and a high/low risk flag
+        based on your chosen threshold.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     with st.form("cancellation_form"):
@@ -71,7 +72,6 @@ def app():
         st.info("Fill in the booking details and click **Estimate risk**.")
         return
 
-    # Build features from inputs
     tour_dt = pd.to_datetime(tour_date)
     calendar_row = _get_calendar_row_for_date(tour_dt)
 
@@ -112,9 +112,9 @@ def app():
 
     st.markdown(
         """
-        - The **threshold slider** controls how cautious the system is when flagging bookings as high-risk.  
-        - A lower threshold will flag more bookings (higher recall, more false positives).  
-        - A higher threshold will flag fewer bookings (lower recall, fewer false positives).
+        - Lower thresholds (e.g. 0.4) will flag more bookings as high-risk (higher recall but more false positives).  
+        - Higher thresholds (e.g. 0.7) will only flag the most likely cancellations (lower recall, fewer false positives).  
         """
     )
+
 

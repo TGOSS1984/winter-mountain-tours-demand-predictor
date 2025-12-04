@@ -68,8 +68,8 @@ def app():
             )
             st.session_state["forecast_result"] = result
 
-    with col_result:
-        st.subheader("Result")
+        with col_result:
+            st.subheader("Result")
 
         result = st.session_state.get("forecast_result")
         if result is None:
@@ -78,8 +78,13 @@ def app():
             pred = result["prediction"]
             inputs = result["inputs"]
 
+            # week_start may be a pandas Timestamp; format it safely
+            week_start_value = inputs.get("week_start")
+            # Handles Timestamp, datetime, or string
+            week_start_str = pd.to_datetime(week_start_value).strftime("%Y-%m-%d")
+
             st.metric(
-                label=f"Forecast bookings for {region} (week starting {inputs['week_start'][:10]})",
+                label=f"Forecast bookings for {region} (week starting {week_start_str})",
                 value=f"{pred:.1f} bookings",
             )
 
@@ -97,5 +102,3 @@ def app():
                 busy or quiet weeks.
                 """
             )
-
-

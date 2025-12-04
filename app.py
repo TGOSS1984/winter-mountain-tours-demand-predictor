@@ -12,6 +12,10 @@ from app_pages import (
 
 
 def main():
+
+    with st.sidebar:
+        st.image("app_pages/assets/logo-white-text.webp", width=120)
+
     st.set_page_config(
         page_title="Winter Mountain Tours – Predictive Analytics",
         page_icon="🏔️",
