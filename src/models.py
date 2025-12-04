@@ -6,9 +6,27 @@ from typing import Dict, Any
 
 import numpy as np
 import pandas as pd
+from sklearn.pipeline import Pipeline
+from xgboost import XGBModel
 
 from . import data_loaders
 from . import features
+
+
+def _ensure_xgb_gpu_id(model):
+    """
+    Heroku CPU builds of xgboost still expect a `gpu_id` attribute on the
+    underlying XGBModel in some code paths. Patch it defensively.
+    """
+    if isinstance(model, Pipeline):
+        est = model.steps[-1][1]
+    else:
+        est = model
+
+    if isinstance(est, XGBModel) and not hasattr(est, "gpu_id"):
+        est.gpu_id = -1
+
+    return model
 
 
 def forecast_weekly_bookings(
@@ -41,6 +59,8 @@ def forecast_weekly_bookings(
         - "inputs": dict of final feature values used
     """
     model = data_loaders.load_bookings_model()
+    model = _ensure_xgb_gpu_id(model)
+
     weekly_df = data_loaders.load_weekly_regression_data()
 
     row = features.build_regression_feature_row(
@@ -96,6 +116,7 @@ def predict_cancellation_risk(
         - "threshold": float
     """
     model = data_loaders.load_cancellation_model()
+    model = _ensure_xgb_gpu_id(model)
 
     # Wrap single dict into a DataFrame with one row
     X = pd.DataFrame([booking_features])[features.CLASSIFICATION_FEATURE_COLUMNS]
@@ -108,3 +129,4 @@ def predict_cancellation_risk(
         "is_high_risk": is_high_risk,
         "threshold": float(threshold),
     }
+

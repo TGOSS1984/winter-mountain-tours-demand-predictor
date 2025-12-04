@@ -2,8 +2,26 @@
 
 import streamlit as st
 import pandas as pd
+from sklearn.pipeline import Pipeline
+from xgboost import XGBModel
 
 from src import data_loaders, evaluate, visualize
+
+
+def _ensure_xgb_gpu_id(model):
+    """
+    Heroku CPU builds of xgboost still expect a `gpu_id` attribute on the
+    underlying XGBModel in some paths. This helper safely patches it.
+    """
+    if isinstance(model, Pipeline):
+        est = model.steps[-1][1]
+    else:
+        est = model
+
+    if isinstance(est, XGBModel) and not hasattr(est, "gpu_id"):
+        est.gpu_id = -1
+
+    return model
 
 
 def app():
@@ -26,6 +44,7 @@ def app():
 
         train_reg, test_reg = data_loaders.load_regression_train_test()
         model = data_loaders.load_bookings_model()
+        model = _ensure_xgb_gpu_id(model)
 
         X_test = test_reg[
             [
@@ -79,6 +98,7 @@ def app():
 
         train_clf, test_clf = data_loaders.load_classification_train_test()
         model = data_loaders.load_cancellation_model()
+        model = _ensure_xgb_gpu_id(model)
 
         X_test = test_clf[
             [
