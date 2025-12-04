@@ -1,51 +1,72 @@
 # app_pages/page_home.py
 
 import streamlit as st
+from src.ui import inject_global_css
 
 
 def app():
-    st.title("Winter Mountain Tour Demand & Cancellation Predictor")
+    inject_global_css()
+
+    st.title("🏔️ Winter Mountain Tour Demand & Cancellation Predictor")
 
     st.markdown(
         """
-        This dashboard is a predictive analytics prototype for **UK winter mountain tours**.
+        <div class="card">
+        <p>
+        This dashboard is a predictive analytics prototype for <strong>UK winter mountain tours</strong>.
         It combines historical bookings, calendar features (bank holidays, peak winter) and
         synthetic weather data to:
-
-        - Forecast **weekly bookings per region**, and  
-        - Predict **cancellation risk** for individual bookings.
-        """
+        </p>
+        <ul>
+          <li>Forecast <strong>weekly bookings per region</strong>, and</li>
+          <li>Predict <strong>cancellation risk</strong> for individual bookings.</li>
+        </ul>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.subheader("Who is this for?")
     st.markdown(
         """
-        - **Operations Lead** – plan guide rosters and capacity by region.  
-        - **Guides / Route Leaders** – understand likely tour volumes.  
-        - **Marketing** – identify peak and low weeks for promotions.  
-        - **Customer Service** – prioritise high-risk bookings for proactive reminders.
-        """
+        <div class="card">
+          <h3>Who is this for?</h3>
+          <ul>
+            <li><strong>Operations Lead</strong> – plan guide rosters and capacity by region.</li>
+            <li><strong>Guides / Route Leaders</strong> – understand likely tour volumes.</li>
+            <li><strong>Marketing</strong> – identify peak and low weeks for promotions.</li>
+            <li><strong>Customer Service</strong> – prioritise high-risk bookings for proactive reminders.</li>
+          </ul>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-
-    st.subheader("Quick model status")
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("#### Bookings Forecast Model")
-        st.success(
-            "Regression model trained and evaluated. "
-            "Error metrics and actual vs predicted plots are available on the **Model Report** page."
+        st.markdown(
+            """
+            <div class="card">
+              <h4>Bookings Forecast Model</h4>
+              <p>Regression model trained and evaluated on weekly region-level data.</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     with col2:
-        st.markdown("#### Cancellation Risk Model")
-        st.success(
-            "Classification model trained with ROC AUC and confusion matrices. "
-            "Try it on the **Cancellation Risk** page."
+        st.markdown(
+            """
+            <div class="card">
+              <h4>Cancellation Risk Model</h4>
+              <p>Classification model with ROC AUC, confusion matrices and threshold tuning.</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     st.info(
         "Use the sidebar to navigate between **EDA & Insights**, "
-        "**Bookings Forecast**, **Cancellation Risk**, and **Model Report**."
+        "**Bookings Forecast**, **Cancellation Risk**, **Model Report**, and **Data & Docs**."
     )
+

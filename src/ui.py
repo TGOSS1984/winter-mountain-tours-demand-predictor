@@ -22,11 +22,12 @@ def inject_global_css() -> None:
 
         /* Card-like look for st.container sections via .card class */
         .card {
-            background-color: rgba(15, 23, 42, 0.95); /* matches dark theme secondary bg */
+            background-color: #404e64; /* matches dark theme secondary bg */
             border-radius: 0.75rem;
             padding: 1.25rem 1.5rem;
             margin-bottom: 1.25rem;
             border: 1px solid rgba(148, 163, 184, 0.25);
+            color: #f9fafb;
         }
 
         .card h2, .card h3, .card h4 {
