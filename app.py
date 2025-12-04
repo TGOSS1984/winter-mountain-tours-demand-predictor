@@ -7,6 +7,7 @@ from app_pages import (
     page_forecast,
     page_cancellation,
     page_report,
+    page_data_docs,
 )
 
 
@@ -25,6 +26,8 @@ def main():
     app.add_page("Bookings Forecast", page_forecast.app)
     app.add_page("Cancellation Risk", page_cancellation.app)
     app.add_page("Model Report", page_report.app)
+    app.add_page("Data & Docs", page_data_docs.app)
+
 
     # Run app
     app.run()
