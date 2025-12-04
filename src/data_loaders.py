@@ -2,15 +2,50 @@
 
 from pathlib import Path
 from functools import lru_cache
+from typing import Any  # NEW
 
 import pandas as pd
 import joblib
+
+# NEW: imports to help patch XGBoost models inside sklearn Pipelines
+from xgboost import XGBModel  # NEW
+from sklearn.pipeline import Pipeline  # NEW
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = BASE_DIR / "data"
 DATA_PROCESSED = DATA_DIR / "processed"
 MODELS_DIR = BASE_DIR / "models"
+
+
+# NEW: helper to patch XGBoost models so version-mismatch attrs exist
+def _patch_xgboost(obj: Any) -> Any:
+    """
+    Patch XGBoost estimators (optionally inside a sklearn Pipeline) so that
+    attributes expected by some XGBoost versions ('gpu_id', 'predictor',
+    'use_label_encoder') are always present.
+
+    This avoids AttributeError when calling get_params()/predict()
+    on models that were trained under a slightly different XGBoost version.
+    """
+    # Case 1: plain XGBModel
+    if isinstance(obj, XGBModel):
+        for attr in ["gpu_id", "predictor", "use_label_encoder"]:
+            if not hasattr(obj, attr):
+                setattr(obj, attr, None)
+        return obj
+
+    # Case 2: sklearn Pipeline containing an XGBModel
+    if isinstance(obj, Pipeline):
+        for name, step in obj.steps:
+            if isinstance(step, XGBModel):
+                for attr in ["gpu_id", "predictor", "use_label_encoder"]:
+                    if not hasattr(step, attr):
+                        setattr(step, attr, None)
+        return obj
+
+    # Anything else: return unchanged
+    return obj
 
 
 @lru_cache(maxsize=1)
@@ -76,7 +111,10 @@ def load_bookings_model():
     Model file is produced in 03_model_regression.ipynb.
     """
     model_path = MODELS_DIR / "v1_bookings_model.pkl"
-    return joblib.load(model_path)
+    model = joblib.load(model_path)
+    # PATCH: ensure XGBoost inside this pipeline has expected attributes
+    model = _patch_xgboost(model)
+    return model
 
 
 @lru_cache(maxsize=1)
@@ -87,7 +125,10 @@ def load_cancellation_model():
     Model file is produced in 04_model_classification.ipynb.
     """
     model_path = MODELS_DIR / "v1_cancel_model.pkl"
-    return joblib.load(model_path)
+    model = joblib.load(model_path)
+    # PATCH: ensure XGBoost inside this pipeline has expected attributes
+    model = _patch_xgboost(model)
+    return model
 
 
 def load_model_metrics(filename: str) -> dict:
