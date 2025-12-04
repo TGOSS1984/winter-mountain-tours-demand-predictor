@@ -4,24 +4,31 @@ import streamlit as st
 import pandas as pd
 
 from src import data_loaders, models
+from src.ui import inject_global_css
 
 
 def app():
-    st.title("Bookings Forecast")
+    inject_global_css()
+
+    st.title("📈 Bookings Forecast")
 
     st.markdown(
         """
-        Use this page to forecast **weekly bookings per region** and explore simple
-        what-if scenarios around holidays and weather.
-        """
+        <div class="card">
+        Use this page to forecast <strong>weekly bookings per region</strong> and explore
+        simple what-if scenarios around bank holidays and weather.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     weekly = data_loaders.load_weekly_regression_data()
 
-    # Sidebar-style controls in a column
     col_controls, col_result = st.columns([1, 2])
 
     with col_controls:
+        st.markdown("#### Inputs")
+
         regions = sorted(weekly["region"].unique())
         region = st.selectbox("Region", options=regions)
 
@@ -36,7 +43,7 @@ def app():
             format_func=lambda d: d.strftime("%Y-%m-%d"),
         )
 
-        st.markdown("**What-if scenario**")
+        st.markdown("#### What-if scenario")
 
         is_holiday = st.checkbox("Treat this as a bank holiday week?")
         is_peak_winter = st.checkbox("Treat this as a peak winter week?")
@@ -62,7 +69,7 @@ def app():
             st.session_state["forecast_result"] = result
 
     with col_result:
-        st.subheader("Forecast result")
+        st.subheader("Result")
 
         result = st.session_state.get("forecast_result")
         if result is None:
@@ -72,7 +79,7 @@ def app():
             inputs = result["inputs"]
 
             st.metric(
-                label=f"Forecast bookings for {region} (week starting {inputs['week_start'].strftime('%Y-%m-%d')})",
+                label=f"Forecast bookings for {region} (week starting {inputs['week_start'][:10]})",
                 value=f"{pred:.1f} bookings",
             )
 
@@ -81,13 +88,14 @@ def app():
 
             st.markdown(
                 """
-                This forecast uses the trained regression model (tuned XGBoost) based on:
+                The forecast uses the tuned XGBoost regression model, combining:
                 - Recent demand (lag features),
                 - Calendar indicators (bank holidays, peak winter),
                 - Weather severity and other weather metrics.
 
-                Compare this forecast with historical patterns on the **EDA & Insights** page
-                to judge whether the model behaviour seems reasonable.
+                Use this to support **guide rostering** and to anticipate particularly
+                busy or quiet weeks.
                 """
             )
+
 
