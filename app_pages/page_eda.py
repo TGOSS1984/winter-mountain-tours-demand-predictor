@@ -3,23 +3,33 @@
 import streamlit as st
 
 from src import data_loaders, visualize
+from src.ui import inject_global_css
 
 
 def app():
-    st.title("EDA & Insights")
+    inject_global_css()
+
+    st.title("📊 EDA & Insights")
 
     st.markdown(
         """
-        This page explores historical bookings and cancellations to answer questions like:
-        - When are tours busiest?
-        - How much uplift do bank holidays provide?
-        - How do cancellations change with weather severity?
-        """
+        <div class="card">
+        <p>
+        Explore historical bookings and cancellations to understand the drivers of demand and risk:
+        </p>
+        <ul>
+          <li>Seasonality by region</li>
+          <li>Holiday uplift</li>
+          <li>Weather-driven cancellations</li>
+        </ul>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     weekly = data_loaders.load_weekly_regression_data()
 
-    # --- Interactive seasonality line chart (Plotly-like feel using Streamlit) ---
+    # Seasonality
     st.subheader("Seasonality of Weekly Bookings by Region")
 
     regions = sorted(weekly["region"].unique())
@@ -37,16 +47,14 @@ def app():
 
         st.line_chart(pivot)
         st.caption(
-            "Interactive line chart showing weekly bookings over time for the selected region(s). "
             "Peaks in winter and holiday periods support the importance of calendar features "
-            "and lagged demand."
+            "and lagged demand as predictors."
         )
     else:
         st.warning("Please select at least one region to display the seasonality chart.")
 
-    # --- Pre-built matplotlib figures for concise insights ---
+    # Holiday uplift
     st.subheader("Holiday Uplift in Bookings")
-
     fig_holiday = visualize.holiday_uplift_barplot()
     st.pyplot(fig_holiday)
     st.caption(
@@ -54,12 +62,13 @@ def app():
         "supporting Hypothesis H1 (holiday uplift)."
     )
 
+    # Cancellations vs weather
     st.subheader("Cancellation Rate by Weather Severity")
-
     fig_cancel_weather = visualize.cancellation_rate_by_weather()
     st.pyplot(fig_cancel_weather)
     st.caption(
-        "Cancellation rates increase with weather severity, supporting Hypothesis H2. "
-        "This justifies including weather severity bins in the cancellation model."
+        "Cancellation rates increase with weather severity, supporting Hypothesis H2 and justifying "
+        "the inclusion of weather severity bins in the cancellation model."
     )
+
 
