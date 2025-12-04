@@ -1,31 +1,69 @@
-# Byte-compiled / optimized / DLL files
+
+# PYTHON / BYTECODE
+
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environments
+
+# ENVIRONMENTS / SECRETS
+
 venv/
 .env/
 
-# Jupyter
+
+# JUPYTER / NOTEBOOK CHECKPOINTS
+
 .ipynb_checkpoints/
 
-# VS Code
-.vscode/
 
-# OS files
+# EDITOR / OS FILES
+
+.vscode/
 .DS_Store
 Thumbs.db
 
-# Python packaging
+
+# PYTHON PACKAGING ARTEFACTS
+
 build/
 dist/
 *.egg-info/
 
-# Data artifacts
-data/interim/
-data/processed/
-reports/figures/
 
-# Streamlit cache
+# DATA FOLDERS
+
+
+# Ignore large raw data
+data/raw/
+
+# Ignore temporary / intermediate data
+data/interim/*
+
+# KEEP processed datasets - ignore excpect below
+!data/processed/
+!data/processed/*.csv
+
+
+# MODEL FILES
+
+
+# Keep all trained model artifacts for deployment
+!models/
+!models/*.pkl
+
+
+# REPORTS / FIGURES
+
+
+# Keep folder, but ignore large generated images
+reports/figures/*.png
+reports/figures/*.jpg
+reports/figures/*.svg
+
+
+# STREAMLIT CACHE / TEMP
+
 .streamlit/
+
+
