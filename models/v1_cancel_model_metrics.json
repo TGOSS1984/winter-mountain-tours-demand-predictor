@@ -1,6 +1,6 @@
 {
   "logistic_regression_roc_auc": 0.620988178849507,
-  "random_forest_roc_auc": 0.5834640348800505,
+  "random_forest_roc_auc": 0.5834608642225829,
   "xgboost_tuned_roc_auc": 0.6281121764520202,
   "best_params_xgb": {
     "classifier__colsample_bytree": 1.0,

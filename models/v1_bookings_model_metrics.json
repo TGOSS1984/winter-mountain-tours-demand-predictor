@@ -1,0 +1,30 @@
+{
+  "baseline": {
+    "MAE": 10.894308943089431,
+    "MAPE": 47.481343361546195,
+    "R2": 0.019004283572646163
+  },
+  "linear_regression": {
+    "MAE": 7.946413292222221,
+    "MAPE": 37.22393238562736,
+    "R2": 0.460913376211019
+  },
+  "random_forest": {
+    "MAE": 8.504796747967479,
+    "MAPE": 39.95653516561499,
+    "R2": 0.42571872291063584
+  },
+  "xgboost_tuned": {
+    "MAE": 8.03718376159668,
+    "MAPE": 37.7603229184473,
+    "R2": 0.4772041440010071
+  },
+  "best_params": {
+    "regressor__colsample_bytree": 1.0,
+    "regressor__learning_rate": 0.05,
+    "regressor__max_depth": 3,
+    "regressor__min_child_weight": 3,
+    "regressor__n_estimators": 100,
+    "regressor__subsample": 0.7
+  }
+}
