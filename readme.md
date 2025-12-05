@@ -19,6 +19,8 @@ It extends the domain established in **Portfolio Project 4: Winter Mountain Tour
 PP4 focused on the **operational layer** (booking, managing, and cancelling tours).  
 PP5 adds the **decision-support analytics layer**: forecasting demand, predicting cancellations, and surfacing insights about weather, holidays, and seasonality.
 
+The dashboard is built in Streamlit, powered by tabular, synthetic but realistic booking data, with models implemented in scikit-learn and XGBoost.
+
 ---
 
 ## 📚 Table of Contents
@@ -87,6 +89,8 @@ The tour provider needs to:
 The app is built as a **predictive analytics prototype** to support operational and commercial decisions, using historical-like bookings data combined with calendar and weather-derived features.
 
 This corresponds to the **Business Understanding** phase of **CRISP-DM** and addresses **LO1.1**.
+
+This section corresponds to the Business Understanding stage of CRISP-DM, where we define the context, objectives and success criteria for the ML tasks.
 
 ---
 
@@ -213,6 +217,8 @@ From the user stories, the key business requirements are:
 
 This satisfies the “rationale to map business requirements to data visualisations and ML tasks” requirement (LO2.1, LO2.2, LO3.2).
 
+In summary, BR1 is answered by the weekly bookings regression model, and BR2 is answered by the cancellation classification model. BR3 is supported by both the EDA plots and model feature importance analysis, while BR4 is satisfied by the deployed Streamlit dashboard that exposes these models to non-technical users
+
 ---
 
 ## 3. Project Hypotheses & Validation Plan
@@ -295,6 +301,18 @@ The project uses a combination of **synthetic data** (for bookings, cancellation
   Derived from dates: year, week number, month, weekday distribution, “is peak winter” flag (Dec–Mar), and holiday indicators.
 
 All datasets are clearly saved under `data/raw/`, `data/interim/` and `data/processed/` as per the project structure.
+
+Dataset sizes (synthetic):
+
+- Weekly regression dataset: ~N rows (weeks × regions), ~M features
+
+- Booking-level classification dataset: ~K rows, M2 features
+
+- Regions: Lake District, Snowdonia, Scottish Highlands
+
+- Timeframe: 12 months of simulated winter-focused data
+
+(PLACEHOLDER - FILL IN NUMBERS)
 
 ---
 
@@ -420,6 +438,12 @@ This satisfies **Merit criterion 5.7** and the Distinction requirement for advan
 These metrics indicate that, on this particular synthetic dataset, the regression model struggles with high noise and variability.  
 This is discussed honestly on the **Model Report** page and in the notebook. For this project, the key learning outcome is the correct setup of the forecasting pipeline and evaluation process, rather than achieving a highly accurate real-world model.
 
+**Does the regression model meet the business requirement?**
+For this synthetic dataset, the regression model does not fully meet a strict business accuracy requirement (MAE and MAPE are relatively high). However, it successfully demonstrates the full forecasting workflow (data → features → model → evaluation → dashboard), which is the primary aim of this educational prototype.
+
+**Does the classification model meet the business requirement?**
+With a ROC AUC of ~0.63, the cancellation model shows moderate discriminatory power. It is acceptable as a prototype for prioritising higher-risk bookings, but would need further tuning and more realistic data before being used in production.
+
 ---
 
 **Classification (Cancellation Risk – Tuned XGBoost)**
@@ -473,6 +497,16 @@ The Streamlit dashboard is implemented as a **multi-page app** under `app_pages/
 
 This page-level breakdown fulfils **LO6.1**.
 
+**Business requirement coverage:**
+
+BR1 (weekly bookings forecast) is mainly answered by the Bookings Forecast and Model Report pages.
+
+BR2 (cancellation risk) is answered by the Cancellation Risk and Model Report pages.
+
+BR3 (drivers and insights) is answered by the EDA & Insights and Model Report pages.
+
+BR4 (interactive dashboard) is covered by the multi-page Streamlit layout with user inputs, selectors and explanatory text.
+
 ---
 
 ### 6.2 Key Plots & Interpretations
@@ -490,6 +524,11 @@ Examples of key visualisations and interpretations:
 
 - **Correlation heatmap / feature importance charts**  
   - Interpretation: shows relative influence of lag features, calendar flags and weather on predictions (supporting H3).
+
+- **Interactive Plotly charts (e.g. region-filtered time series and bar charts)**  
+  - Interpretation: allow users to explore different regions and time windows dynamically, supporting BR1 and BR3.
+
+In the dashboard, each of these plots includes 1–2 lines of interpretation text directly underneath, explaining what the user is seeing and how it relates to the business questions (fulfilling LO6.2). Several EDA plots are implemented with Plotly to provide interactive tooltips and region selection, fulfilling the Merit 6.4–6.5 criteria.
 
 Each plot is accompanied by **plain-language interpretation text** in the EDA and Model Report pages, addressing **LO6.2** and ensuring plots are not presented without context.
 
@@ -552,6 +591,8 @@ Several deployment issues were resolved along the way (e.g. slug too large, XGBo
 
 ### 7.3 Repository Structure
 
+```
+
 project/
 │  README.md
 │  Procfile
@@ -592,6 +633,12 @@ project/
 │
 └─ reports/
     └─ figures/
+
+```
+
+**Version Control**
+
+    This project was developed using Git and hosted on GitHub, with regular commits for each feature or fix. Branches were used for larger changes (e.g. modelling, Streamlit pages, deployment tweaks), and the commit history documents the evolution of the data pipeline, models and dashboard. This satisfies LO3.3 (use of Git & GitHub for version control).
 
 ---
 
