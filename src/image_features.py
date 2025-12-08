@@ -10,37 +10,14 @@ from PIL import Image
 
 
 def _load_image_bytes(image_bytes: bytes, size: int = 224) -> np.ndarray:
-    """
-    Load an image from raw bytes and return a resized RGB numpy array.
-
-    - Converts to RGB to standardise channels.
-    - Resizes to a square (size x size) for consistent statistics.
-    - Returns an array of shape (H, W, 3) with values in [0, 255].
-
-    This function is intentionally simple and lightweight. We are not using
-    heavy CNN frameworks here – just enough structure to extract hand-crafted
-    features for a small scikit-learn classifier.
-    """
+   
     img = Image.open(BytesIO(image_bytes)).convert("RGB")
     img = img.resize((size, size))
     return np.asarray(img, dtype=np.uint8)
 
 
 def extract_weather_features_from_bytes(image_bytes: bytes) -> Dict[str, float]:
-    """
-    Extract simple, interpretable features from a mountain weather image.
-
-    These are NOT deep-learning features. They are hand-crafted statistics
-    chosen to roughly capture:
-
-    - Overall brightness (daylight vs low visibility)
-    - Contrast / texture (clear structures vs flat fog)
-    - 'Whiteness' – proportion of very light pixels (e.g. snow cover)
-    - Channel variability (how colourful vs grey the scene is)
-
-    Returns a small dictionary that can be converted to a single-row
-    pandas.DataFrame for scikit-learn models.
-    """
+    
     arr = _load_image_bytes(image_bytes)  # shape (H, W, 3)
     arr_f = arr.astype("float32") / 255.0  # scale to [0, 1]
 
