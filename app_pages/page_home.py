@@ -9,6 +9,8 @@ def app():
 
     st.title("🏔️ Winter Mountain Tour Demand & Cancellation Predictor")
 
+    st.image("app_pages/assets/snowy_mtn_art_transparent.png", use_container_width=True)
+
     st.markdown(
         """
         <div class="card">
@@ -20,7 +22,12 @@ def app():
         <ul>
           <li>Forecast <strong>weekly bookings per region</strong>, and</li>
           <li>Predict <strong>cancellation risk</strong> for individual bookings.</li>
+          <li>Classify <strong>mountain weather conditions</strong> from uploaded images to support situational awareness.</li>
         </ul>
+        <p>
+            The image-based weather tool provides a quick visual assessment of conditions such as snow, fog, 
+            or clear visibility, helping stakeholders make more informed decisions when planning winter routes.
+        </p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -65,8 +72,29 @@ def app():
             unsafe_allow_html=True,
         )
 
+    with st.container():
+        st.markdown(
+            """
+            <div class="card">
+              <h4>Weather Severity Classifier</h4>
+              <p>
+                Upload a mountain image to receive a predicted weather severity rating 
+                (e.g., clear, moderate, severe). Built using a lightweight CNN model.
+              </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
     st.info(
         "Use the sidebar to navigate between **EDA & Insights**, "
         "**Bookings Forecast**, **Cancellation Risk**, **Model Report**, and **Data & Docs**."
     )
+
+    st.warning(
+        "⚠️ This dashboard is a learning prototype for the Predictive Analytics module. "
+        "Forecasts and image-based classifications are illustrative only and not intended "
+        "for real-world safety decisions."
+        )
+
 

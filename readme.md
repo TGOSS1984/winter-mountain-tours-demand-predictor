@@ -19,6 +19,14 @@ It extends the domain established in **Portfolio Project 4: Winter Mountain Tour
 PP4 focused on the **operational layer** (booking, managing, and cancelling tours).  
 PP5 adds the **decision-support analytics layer**: forecasting demand, predicting cancellations, and surfacing insights about weather, holidays, and seasonality.
 
+This project has been a major learning curve for me, particularly in understanding how different components of a predictive analytics workflow fit together. Before this project, I had limited experience with tools such as Jupyter Notebooks, Streamlit, pandas, NumPy, and XGBoost, and building an end-to-end pipeline—from data collection to deployment—required significant study, experimentation and troubleshooting.
+
+To support my learning, I used a mixture of course material, internet searches, technical documentation and community discussions to understand errors, improve my approach and validate best practices. I have been careful not just to copy solutions, but to understand each step, document issues thoroughly, and apply the concepts independently across the project.
+
+My real-world background in Business Intelligence, forecasting, and KPI-driven dashboard reporting helped greatly on the visualisation and communication side of the project. I regularly work with data in a commercial context, so translating model output into stakeholder-focused insights felt familiar. However, the machine learning aspects—model selection, training, tuning, and evaluation—were completely new, and represented a steep but rewarding challenge.
+
+Overall, this project reflects both my technical learning journey and my practical experience in transforming data into meaningful, actionable insights.
+
 The dashboard is built in Streamlit, powered by tabular, synthetic but realistic booking data, with models implemented in scikit-learn and XGBoost.
 
 ---
@@ -750,24 +758,17 @@ project/
 ## 8. Main Libraries & Tools Used
 
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
-
 ![pandas](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
-
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
-
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
-
 ![XGBoost](https://img.shields.io/badge/XGBoost-FF9900?style=for-the-badge&logo=xgboost&logoColor=white)
-
 ![matplotlib](https://img.shields.io/badge/matplotlib-11557C?style=for-the-badge)
-
 ![seaborn](https://img.shields.io/badge/seaborn-4C72B0?style=for-the-badge)
-
 ![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
-
 ![joblib](https://img.shields.io/badge/joblib-0B3D91?style=for-the-badge)
-
 ![requests](https://img.shields.io/badge/requests-2C5BB4?style=for-the-badge)
+![Pillow](https://img.shields.io/badge/Pillow-3670A0?style=for-the-badge&logo=pillow&logoColor=white)
+
 
 - **Streamlit** – user interface/dashboard for ML prototyping. Used to build the multipage layout, user input widgets and display plots.
 - **pandas** – data loading, cleaning, aggregation and feature engineering.
@@ -778,6 +779,8 @@ project/
 - **Plotly** – interactive visualisations in the EDA dashboard.
 - **joblib** – saving/loading trained models (`.pkl` files).
 - **requests** – accessing the UK bank holidays endpoint in `00_collect_endpoint_bank_holidays.ipynb`.
+- **Pillow (PIL)** – used to load and process image files for the Weather Severity Classifier (e.g., resizing, color extraction).
+
 
 
 Example usage:
