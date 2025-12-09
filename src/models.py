@@ -12,6 +12,15 @@ from xgboost import XGBModel
 from . import data_loaders
 from . import features
 
+from pathlib import Path
+from functools import lru_cache
+
+from src.image_features import extract_weather_features_from_bytes
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+MODELS_DIR = BASE_DIR / "models"
+WEATHER_MODEL_PATH = MODELS_DIR / "weather_severity_model.pkl"
+
 
 def _ensure_xgb_gpu_id(model):
     """
@@ -27,6 +36,68 @@ def _ensure_xgb_gpu_id(model):
         est.gpu_id = -1
 
     return model
+
+@lru_cache(maxsize=1)
+def load_weather_severity_model():
+   
+    if not WEATHER_MODEL_PATH.exists():
+        # Fail gracefully instead of crashing the whole app
+        return None
+
+    model = joblib.load(WEATHER_MODEL_PATH)
+
+    # Optional defensive check: make sure has predict()
+    if not hasattr(model, "predict"):
+        raise TypeError(
+            f"Loaded weather model from {WEATHER_MODEL_PATH} "
+            "does not implement predict()."
+        )
+
+    return model
+
+def predict_weather_severity_from_bytes(image_bytes: bytes) -> Dict[str, Any]:
+    """
+    Predict weather severity (e.g. 'mild', 'moderate', 'severe') from raw image bytes.
+
+    """
+    model = load_weather_severity_model()
+    if model is None:
+        raise RuntimeError(
+            "Weather severity model not found. Please ensure "
+            "models/weather_severity_model.pkl exists."
+        )
+
+    # 1) Extract features from image
+    feats = extract_weather_features_from_bytes(image_bytes)
+
+    # 2) Build single-row DataFrame
+    df = pd.DataFrame([feats])
+
+    # 3) Arrange columns in the order the model was trained on (prevents silent bugs)
+    if hasattr(model, "feature_names_in_"):
+        df = df.filter(model.feature_names_in_)
+
+    # 4) Predict label
+    label = model.predict(df)[0]
+
+    # 5) Predict probabilities (if supported)
+    proba_dict: Dict[str, float] = {}
+    if hasattr(model, "predict_proba"):
+        proba = model.predict_proba(df)[0]
+        classes = getattr(model, "classes_", None)
+        if classes is not None:
+            proba_dict = {
+                str(cls): float(p) for cls, p in zip(classes, proba)
+            }
+
+    result: Dict[str, Any] = {
+        "label": str(label),
+        "proba": proba_dict,
+        "features": feats,
+    }
+
+    return result
+
 
 
 def forecast_weekly_bookings(
