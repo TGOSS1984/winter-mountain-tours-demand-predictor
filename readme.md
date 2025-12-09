@@ -30,6 +30,7 @@ The dashboard is built in Streamlit, powered by tabular, synthetic but realistic
    1.2 [Business Problem & Objectives](#12-business-problem--objectives)  
    1.3 [Stakeholders & Intended Users](#13-stakeholders--intended-users)  
    1.4 [Key Performance Indicators (KPIs)](#14-key-performance-indicators-kpis)  
+   1.5 [Where the Image Model Fits in CRISP-DM](#15-where-the-image-model-fits-in-crisp-dm)  
 
 2. [Business Requirements & User Stories](#2-business-requirements--user-stories)  
    2.1 [User Stories](#21-user-stories)  
@@ -163,6 +164,18 @@ To measure whether the predictive analytics solution is useful:
 
 These metrics are reported in the modelling notebooks and surfaced in narrative form on the **Model Report** dashboard page (LO3.2, LO4.2, LO5.2).
 
+### 1.5 Where the Image Model Fits in CRISP-DM
+
+The Weather Severity Classifier functions as a parallel modelling stream outside the main CRISP-DM pipeline.
+
+- It has its own small “Data Understanding → Modelling → Evaluation” cycle.
+
+- It does not feed into the regression or classification pipelines.
+
+- It complements the dashboard by offering an additional data modality (images), which strengthens interpretability and user engagement.
+
+This mirrors real-world analytics workflows where secondary ML tools (e.g., photo analysis for conditions) support a larger operational system without altering its core prediction paths.
+
 ---
 
 ## 2. Business Requirements & User Stories
@@ -205,6 +218,9 @@ From the user stories, the key business requirements are:
 - **BR4 – Interactive dashboard for non-technical users**  
   The solution must expose the models via a Streamlit dashboard with clear navigation, user inputs and plain-language explanations.
 
+- **BR5 – Image-Based Weather Interpretation**  
+  This feature enhances situational awareness and demonstrates how image-based ML models can complement tabular predictions.
+  It does not influence forecasting or cancellation outputs but enriches decision support and user engagement.
 ---
 
 ### 2.3 Mapping Business Requirements to Visualisations & ML Tasks
@@ -276,6 +292,19 @@ In the tuned regression model, lag features (e.g. bookings at t-1 and t-52) rank
 This **supports H3**.
 
 These hypotheses, validation steps, and conclusions meet Merit criteria **1.2, 2.3, 4.3** and Distinction guidance on hypotheses.
+
+---
+
+### H4: Why Include Image-Based Weather Classification? (Real-World Relevance)
+
+Mountain tour operators frequently rely on visual inspection of route conditions — snow coverage, wind on ridgelines, cloud base, visibility, or storm build-up.
+This prototype demonstrates how ML could assist with:
+
+- Rapid triage of user-submitted images
+- Early detection of potentially hazardous conditions
+- Supporting communications between guides and operations teams
+
+While not used for automated decision-making, the feature illustrates how computer vision could enhance situational awareness in future versions of the Winter Mountain Tours platform.
 
 ---
 
@@ -455,6 +484,35 @@ This is above random guessing (0.5) and indicates **moderate** ability to separa
 The model is suitable as a **prototype** for early-stage risk prioritisation but would be improved before real-world use.
 
 The Model Report page and notebooks include confusion matrices, ROC curves and narrative commentary clarifying these points, aligning with **LO5.2** and **LO4.2**.
+
+**System Architecture Overview**
+
+```
+
+                 ┌────────────────────────┐
+                 │      User (UI)         │
+                 │ ─────────────────────── │
+                 │  - Select region/week   │
+                 │  - Enter booking data   │
+                 │  - Upload mountain foto │
+                 └─────────────┬──────────┘
+                               │
+                     Streamlit Front-End
+                               │
+       ┌───────────────────────┼────────────────────────┐
+       │                       │                        │
+       ▼                       ▼                        ▼
+┌──────────────┐     ┌────────────────┐       ┌──────────────────────┐
+│ Regression   │     │ Classification │       │ Weather Image Model  │
+│ Forecasting  │     │ Cancellation  │       │  (Mild/Mod/Severe)    │
+│ Model (XGB)  │     │ Risk (XGB)    │       │                      │
+└─────┬────────┘     └───────┬───────┘       └───────────┬──────────┘
+      │                      │                           │
+      │                      │                           │
+      ▼                      ▼                           ▼
+ Weekly forecast     Cancellation score          Weather severity label
+ for each region     for each booking           + class probabilities
+```
 
 ---
 
@@ -1000,6 +1058,10 @@ Possible next steps:
 
 -   Improve calibration of the classification model and tighten its decision thresholds.
 
+-   Add a larger data set (with more variety) for the image based weather predictor to improve accuracy 
+
+-   Sales based dashboards which show turnover, Profit & Loss accounts, margins etc
+
 ---
 
 13\. Learning Outcomes Mapping (LO1--LO7)
@@ -1023,11 +1085,11 @@ Possible next steps:
 
 **LO5 -- Create Intelligent Systems Using ML**
 
--   Models, evaluation, and pipeline described in [Section 5] and implemented in the notebooks and Streamlit app.
+-   Models, evaluation, and pipeline described in [Section 5] and implemented in the notebooks and Streamlit app. In addition to forecasting/cancellation models the project implements an image-based weather classifier
 
 **LO6 -- Represent Data Stories via Visualisation**
 
--   Dashboard design, visualisations and explanations in [Section 6].
+-   Dashboard design, visualisations and explanations in [Section 6]. The image-based weather predictor provides additional visual story around weather conditions
 
 **LO7 -- Collect, Arrange & Process Data**
 
