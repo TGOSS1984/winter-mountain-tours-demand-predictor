@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Any
 
+import joblib 
 import numpy as np
 import pandas as pd
 from sklearn.pipeline import Pipeline
@@ -25,7 +26,7 @@ WEATHER_MODEL_PATH = MODELS_DIR / "weather_severity_model.pkl"
 def _ensure_xgb_gpu_id(model):
     """
     Heroku CPU builds of xgboost still expect a `gpu_id` attribute on the
-    underlying XGBModel in some code paths. Patch it defensively.
+    underlying XGBModel in some code paths.
     """
     if isinstance(model, Pipeline):
         est = model.steps[-1][1]
