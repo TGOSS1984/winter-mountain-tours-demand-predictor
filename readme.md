@@ -48,6 +48,7 @@ The dashboard is built in Streamlit, powered by tabular, synthetic but realistic
    5.2 [ML Business Case – Cancellation Risk (Classification)](#52-ml-business-case--cancellation-risk-classification)  
    5.3 [Model Training & Hyperparameter Tuning](#53-model-training--hyperparameter-tuning)  
    5.4 [Model Performance Summary](#54-model-performance-summary)  
+   5.5 [Image Based Weather Severity Classifier](#55-image-based-weather-severity-classifier-supporting-model)
 
 6. [Dashboard Design & Data Visualisation](#6-dashboard-design--data-visualisation)  
    6.1 [Dashboard Pages](#61-dashboard-pages)  
@@ -457,6 +458,46 @@ The Model Report page and notebooks include confusion matrices, ROC curves and n
 
 ---
 
+ ### 5.5 Image-Based Weather Severity Classifier (Supporting Model)
+
+In addition to the main regression and classification models, the project includes a prototype image-based weather severity classifier.
+This model is designed as an auxiliary tool that demonstrates how image data can be incorporated into mountain safety or tour planning workflows.
+
+**Learning Method**
+
+A lightweight supervised classification model trained on simple image-derived features:
+
+- brightness
+- colourfulness
+- proportion of bright pixels
+- saturation/contrast proxies
+
+These interpretable features are extracted from uploaded images using PIL and NumPy.
+The model was implemented using scikit-learn and trained using labelled examples representing mild, moderate, and severe mountain conditions.
+
+**Outputs**
+
+Given an uploaded image, the model predicts:
+
+- label – mild / moderate / severe
+- class probabilities – adds transparency and insight into model confidence
+
+**Purpose in the Project**
+
+While not part of the main forecasting or cancellation pipelines, the image classifier:
+
+Demonstrates end-to-end use of an image ML workflow within the same deployed app
+
+Shows integration of different data modalities (tabular + image)
+
+Supports a more contextual understanding of weather conditions
+
+Enhances dashboard interactivity and interpretability
+
+It is explicitly designed as a safe, isolated prototype that cannot affect the primary predictive tasks, aligning with good ML engineering practice.
+
+---
+
 ## 6. Dashboard Design & Data Visualisation
 
 ### 6.1 Dashboard Pages
@@ -494,6 +535,12 @@ The Streamlit dashboard is implemented as a **multi-page app** under `app_pages/
    - Data dictionary and feature descriptions  
    - Links to notebooks  
    - High-level explanation of data lineage (raw → processed)
+
+7. **Weather from Image (Image-Based Severity Classifier)**  
+   - Upload an image (JPG/PNG/WebP) showing mountain conditions 
+   - View the uploaded image directly in the dashboard  
+   - Run the Weather Severity Classifier to predict: severity label/class probabilities for transparency
+   - Read plain-language interpretation text explaining what each severity category means
 
 This page-level breakdown fulfils **LO6.1**.
 
@@ -998,5 +1045,9 @@ Each outcome is supported by concrete code, notebooks, and deployed app behaviou
 -   **UK Government Bank Holidays API** -- for the real bank holidays data used in the calendar features.
 
 -   **XGBoost, scikit-learn, pandas, NumPy, Streamlit, matplotlib, seaborn** -- open-source libraries that made the analysis and modelling possible.
+
+-   **Google Images** used creative commons licence for some imagery for AI traning, however most images are my own
+
+-   **Chat GPT** was used to support with readme structuring & layout
 
 -   Any other referenced documentation or blog posts are cited through comments in the notebooks where relevant.
