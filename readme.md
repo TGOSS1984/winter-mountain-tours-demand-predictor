@@ -11,12 +11,20 @@
 
 </div>
 
+<div align="center">
+<img src="app_pages/assets/images/readme_logo.png" alt="Logo" width="80" height="80">
+</div>
+
+---
+
 A Streamlit-based predictive analytics app that forecasts **weekly winter tour bookings by region** and predicts **cancellation risk** for individual bookings.
 
 This project is built for **Portfolio Project 5: Predictive Analytics** on the Code Institute **Full Stack Software Development Diploma (Predictive Analytics)**.
 
 It extends the domain established in **Portfolio Project 4: Winter Mountain Tours V2**, where I built a full-stack Django booking system for UK winter mountain routes.  
 PP4 focused on the **operational layer** (booking, managing, and cancelling tours).  
+View PP4 here: [Live Site](https://uk-winter-mountain-tours-v2-c6f21d80d2c8.herokuapp.com/)
+
 PP5 adds the **decision-support analytics layer**: forecasting demand, predicting cancellations, and surfacing insights about weather, holidays, and seasonality.
 
 This project has been a major learning curve for me, particularly in understanding how different components of a predictive analytics workflow fit together. Before this project, I had limited experience with tools such as Jupyter Notebooks, Streamlit, pandas, NumPy, and XGBoost, and building an end-to-end pipeline—from data collection to deployment—required significant study, experimentation and troubleshooting.

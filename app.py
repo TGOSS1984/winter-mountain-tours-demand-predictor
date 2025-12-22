@@ -21,7 +21,7 @@ def main():
     )
 
     with st.sidebar:
-        st.image("app_pages/assets/logo-white-text.webp", width=120)
+        st.image("app_pages/assets/images/logo-white-text.webp", width=120)
 
 
     app = MultiPage(app_name="Winter Mountain Tour Demand & Cancellation Predictor")

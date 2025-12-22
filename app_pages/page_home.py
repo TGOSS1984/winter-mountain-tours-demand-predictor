@@ -9,7 +9,7 @@ def app():
 
     st.title("🏔️ Winter Mountain Tour Demand & Cancellation Predictor")
 
-    st.image("app_pages/assets/snowy_mtn_art_transparent.png", use_container_width=True)
+    st.image("app_pages/assets/images/snowy_mtn_art_transparent.png", use_container_width=True)
 
     st.markdown(
         """
