@@ -231,6 +231,15 @@ def app():
         "This helps Operations quickly see where staffing pressure is highest for the selected week."
     )
 
+    csv_bytes = df_map.sort_values("forecast_bookings", ascending=False).to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label="⬇️ Download map data (CSV)",
+        data=csv_bytes,
+        file_name=f"forecast_map_{week_str}.csv",
+        mime="text/csv",
+    )
+
+
     # Non-blocking diagnostics
     if errors:
         with st.expander("Regions skipped (debug)"):
