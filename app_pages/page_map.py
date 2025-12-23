@@ -149,6 +149,14 @@ def app():
         st.warning("Select at least one region to display the map.")
         return
 
+    st.markdown("### ✅ Current view")
+    st.write(
+        f"**Week starting:** {week_str}  \n"
+        f"**Scenario:** bank holiday={chosen_scenario['is_bank_holiday_week']}, "
+        f"peak winter={chosen_scenario['is_peak_winter']}, "
+        f"severity={chosen_scenario['weather_severity_bin']}"
+    )
+
 
     rows = []
     errors = []
