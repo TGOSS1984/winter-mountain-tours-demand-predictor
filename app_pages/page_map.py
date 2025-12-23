@@ -200,7 +200,7 @@ def app():
                 st.write(errors)
         return
 
-    fig = px.scatter_geo(
+    fig = px.scatter_mapbox(
         df_map,
         lat="lat",
         lon="lon",
@@ -208,10 +208,19 @@ def app():
         hover_data={"forecast_bookings": ":.1f", "lat": False, "lon": False},
         size="forecast_bookings",
         color="forecast_bookings",
-        scope="world",
-        title=f"Forecasted bookings (week starting {chosen_week.strftime('%Y-%m-%d')})",
         size_max=40,
+        zoom=4.6,
+        center={"lat": 55.0, "lon": -3.5},
+        title=f"Forecasted bookings (week starting {chosen_week.strftime('%Y-%m-%d')})",
     )
+
+    fig.update_layout(
+        mapbox_style="open-street-map",
+        margin=dict(l=0, r=0, t=50, b=0),
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
 
     # Zoom map to UK & Ireland for clearer focus
     fig.update_geos(
@@ -222,8 +231,6 @@ def app():
         showland=True,
         landcolor="rgba(255,255,255,0.04)",
     )
-
-    st.plotly_chart(fig, use_container_width=True)
 
     st.caption(
         "Interpretation: larger/warmer markers indicate higher forecasted demand. "
