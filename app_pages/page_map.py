@@ -120,11 +120,10 @@ def app():
         "weather_severity_bin": severity,
     }
 
-    if st.button("Update map"):
-        st.session_state["map_scenario"] = scenario
+    # Persist scenario automatically (no button needed)
+    st.session_state["map_scenario"] = scenario
+    chosen_scenario = st.session_state["map_scenario"]
 
-    # Always define chosen_scenario (even if button not pressed)
-    chosen_scenario = st.session_state.get("map_scenario", scenario)
 
     # Build stable keys for caching
     week_str = chosen_week.strftime("%Y-%m-%d")
