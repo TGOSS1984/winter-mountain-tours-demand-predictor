@@ -27,16 +27,54 @@ def app():
 
     # Build list of weeks from the dataset
     available_weeks = (
-        weekly["week_start"].dropna().drop_duplicates().sort_values()
+    weekly["week_start"].dropna().drop_duplicates().sort_values().reset_index(drop=True)
     )
 
-    # Week selector
-    week_start = st.selectbox(
-        "Week (start date)",
-        options=available_weeks,
-        format_func=lambda d: pd.to_datetime(d).strftime("%Y-%m-%d"),
+    # Default to last available week (often most relevant)
+    default_idx = len(available_weeks) - 1 if len(available_weeks) > 0 else 0
+
+    st.markdown("### 🗓️ Week selection")
+    week_idx = st.slider(
+        "Scrub through weeks",
+        min_value=0,
+        max_value=max(len(available_weeks) - 1, 0),
+        value=st.session_state.get("map_week_idx", default_idx),
+        step=1,
     )
-    week_start = pd.to_datetime(week_start)
+
+    chosen_week = pd.to_datetime(available_weeks.iloc[week_idx])
+    st.session_state["map_week_idx"] = week_idx
+
+    # Optional fallback selector (useful for debugging)
+    with st.expander("Alternative week picker (debug)", expanded=False):
+        week_start_pick = st.selectbox(
+            "Pick a week (start date)",
+            options=available_weeks,
+            index=week_idx,
+            format_func=lambda d: pd.to_datetime(d).strftime("%Y-%m-%d"),
+        )
+        chosen_week = pd.to_datetime(week_start_pick)
+        # sync slider to pick if user uses the selectbox
+        try:
+            st.session_state["map_week_idx"] = int(available_weeks[available_weeks == week_start_pick].index[0])
+        except Exception:
+            pass
+
+    col_prev, col_next, col_jump = st.columns([1, 1, 2])
+    with col_prev:
+        if st.button("◀ Previous"):
+            st.session_state["map_week_idx"] = max(0, st.session_state["map_week_idx"] - 1)
+            st.rerun()
+
+    with col_next:
+        if st.button("Next ▶"):
+            st.session_state["map_week_idx"] = min(len(available_weeks) - 1, st.session_state["map_week_idx"] + 1)
+            st.rerun()
+
+    with col_jump:
+        st.caption("Tip: use the slider to scrub through weeks and watch demand shift by region.")
+
+
 
     st.markdown("#### Scenario (optional)")
     col_a, col_b, col_c = st.columns(3)
@@ -58,12 +96,10 @@ def app():
     }
 
     if st.button("Update map"):
-        st.session_state["map_week_start"] = week_start
         st.session_state["map_scenario"] = scenario
 
-    # Default state (first load)
-    chosen_week = st.session_state.get("map_week_start", week_start)
-    chosen_scenario = st.session_state.get("map_scenario", scenario)
+        chosen_scenario = st.session_state.get("map_scenario", scenario)
+
 
     regions = sorted(pd.Series(weekly["region"]).dropna().unique())
 
