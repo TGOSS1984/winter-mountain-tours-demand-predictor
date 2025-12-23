@@ -181,6 +181,12 @@ def app():
 
     df_map = pd.DataFrame(rows)
 
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Min forecast", f"{df_map['forecast_bookings'].min():.1f}")
+    col2.metric("Average forecast", f"{df_map['forecast_bookings'].mean():.1f}")
+    col3.metric("Max forecast", f"{df_map['forecast_bookings'].max():.1f}")
+
+
     # 5E: quick summary of top regions
     if not df_map.empty:
         top = df_map.sort_values("forecast_bookings", ascending=False).head(3)
