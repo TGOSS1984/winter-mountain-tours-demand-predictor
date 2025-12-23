@@ -3,10 +3,35 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from functools import lru_cache
 
 from src import data_loaders, models
 from src.geo import get_region_latlon
 from src.ui import inject_global_css
+
+@lru_cache(maxsize=256)
+def _cached_forecast(region: str, week_start_str: str, scenario_key: str) -> float:
+    """
+    Cached forecast wrapper to avoid re-running model inference repeatedly when
+    scrubbing through weeks or re-rendering Streamlit.
+    """
+    week_start = pd.to_datetime(week_start_str)
+    # scenario_key is already encoded; decode it back to dict safely
+    # Format: "holiday=0|peak=1|sev=mild"
+    parts = dict(p.split("=", 1) for p in scenario_key.split("|"))
+    scenario = {
+        "is_bank_holiday_week": int(parts["holiday"]),
+        "is_peak_winter": int(parts["peak"]),
+        "weather_severity_bin": parts["sev"],
+    }
+
+    result = models.forecast_weekly_bookings(
+        region=region,
+        week_start=week_start,
+        scenario=scenario,
+    )
+    return float(result["prediction"])
+
 
 
 def app():
@@ -98,24 +123,42 @@ def app():
     if st.button("Update map"):
         st.session_state["map_scenario"] = scenario
 
-        chosen_scenario = st.session_state.get("map_scenario", scenario)
+    # Always define chosen_scenario (even if button not pressed)
+    chosen_scenario = st.session_state.get("map_scenario", scenario)
+
+    # Build stable keys for caching
+    week_str = chosen_week.strftime("%Y-%m-%d")
+    scenario_key = (
+        f"holiday={chosen_scenario['is_bank_holiday_week']}"
+        f"|peak={chosen_scenario['is_peak_winter']}"
+        f"|sev={chosen_scenario['weather_severity_bin']}"
+    )
+
 
 
     regions = sorted(pd.Series(weekly["region"]).dropna().unique())
 
+    st.markdown("### 🧭 Region filter (optional)")
+    selected_regions = st.multiselect(
+        "Choose regions to display",
+        options=regions,
+        default=regions,
+    )
+
+    if not selected_regions:
+        st.warning("Select at least one region to display the map.")
+        return
+
+
     rows = []
     errors = []
 
-    for region in regions:
+    for region in selected_regions:
         try:
             lat, lon = get_region_latlon(region)
 
-            result = models.forecast_weekly_bookings(
-                region=region,
-                week_start=chosen_week,
-                scenario=chosen_scenario,
-            )
-            pred = float(result["prediction"])
+            pred = _cached_forecast(region, week_str, scenario_key)
+
 
             rows.append(
                 {
@@ -129,6 +172,13 @@ def app():
             errors.append(f"{region}: {e}")
 
     df_map = pd.DataFrame(rows)
+
+    # 5E: quick summary of top regions
+    if not df_map.empty:
+        top = df_map.sort_values("forecast_bookings", ascending=False).head(3)
+        st.markdown("### 🔥 Top forecasted demand (this week)")
+        for i, row in enumerate(top.itertuples(index=False), start=1):
+            st.write(f"{i}. **{row.region}** — {row.forecast_bookings:.1f} bookings")
 
     if df_map.empty:
         st.error("No forecast results were generated. Check region mappings and model availability.")
@@ -145,10 +195,21 @@ def app():
         hover_data={"forecast_bookings": ":.1f", "lat": False, "lon": False},
         size="forecast_bookings",
         color="forecast_bookings",
-        scope="europe",
+        scope="world",
         title=f"Forecasted bookings (week starting {chosen_week.strftime('%Y-%m-%d')})",
         size_max=40,
     )
+
+    # Zoom map to UK & Ireland for clearer focus
+    fig.update_geos(
+        lataxis_range=[49.5, 59.7],   # south coast to north Scotland
+        lonaxis_range=[-8.8, 2.2],    # west Ireland to east England
+        showcountries=True,
+        countrycolor="rgba(255,255,255,0.15)",
+        showland=True,
+        landcolor="rgba(255,255,255,0.04)",
+    )
+
     st.plotly_chart(fig, use_container_width=True)
 
     st.caption(
