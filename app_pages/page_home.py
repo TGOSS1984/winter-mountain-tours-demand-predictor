@@ -28,6 +28,14 @@ def app():
             The image-based weather tool provides a quick visual assessment of conditions such as snow, fog, 
             or clear visibility, helping stakeholders make more informed decisions when planning winter routes.
         </p>
+        <p>
+            The image-based weather tool provides a quick visual assessment of conditions such as snow, fog, 
+            or clear visibility, helping stakeholders make more informed decisions when planning winter routes.
+        </p>
+        <p>
+            <em>Map View</em> can be used to <strong>Visualise pressure</strong> to quickly see where demand is highest by week.
+        </p>
+        
         </div>
         """,
         unsafe_allow_html=True,
@@ -72,7 +80,9 @@ def app():
             unsafe_allow_html=True,
         )
 
-    with st.container():
+    col1, col2 = st.columns(2)
+
+    with col1:
         st.markdown(
             """
             <div class="card">
@@ -80,6 +90,19 @@ def app():
               <p>
                 Upload a mountain image to receive a predicted weather severity rating 
                 (e.g., clear, moderate, severe). Built using a lightweight CNN model.
+              </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        st.markdown(
+            """
+            <div class="card">
+              <h4>Map View</h4>
+              <p>
+                Use Map View to provide a spatial overview of forecasted weekly bookings across UK regions, translating numerical forecasts into a geographic format that is easier to interpret at a glance.
               </p>
             </div>
             """,

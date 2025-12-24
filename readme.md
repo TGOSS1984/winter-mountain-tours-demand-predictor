@@ -47,6 +47,7 @@ The dashboard is built in Streamlit, powered by tabular, synthetic but realistic
    1.3 [Stakeholders & Intended Users](#13-stakeholders--intended-users)  
    1.4 [Key Performance Indicators (KPIs)](#14-key-performance-indicators-kpis)  
    1.5 [Where the Image Model Fits in CRISP-DM](#15-where-the-image-model-fits-in-crisp-dm)  
+   1.6 [Spatial Demand Overview (Map View)](#16-spatial-demand-overview-map-view)
 
 2. [Business Requirements & User Stories](#2-business-requirements--user-stories)  
    2.1 [User Stories](#21-user-stories)  
@@ -85,6 +86,7 @@ The dashboard is built in Streamlit, powered by tabular, synthetic but realistic
 11. [Ethical Considerations](#11-ethical-considerations)  
 
 12. [Future Improvements](#12-future-improvements)  
+      [Learning Reflection & Development Journey](#learning-reflection--development-journey)  
 
 13. [Learning Outcomes Mapping (LO1–LO7)](#13-learning-outcomes-mapping-lo1lo7)  
 
@@ -191,6 +193,25 @@ The Weather Severity Classifier functions as a parallel modelling stream outside
 - It complements the dashboard by offering an additional data modality (images), which strengthens interpretability and user engagement.
 
 This mirrors real-world analytics workflows where secondary ML tools (e.g., photo analysis for conditions) support a larger operational system without altering its core prediction paths.
+
+
+### 1.6 Spatial Demand Overview (Map View)
+
+The Map View provides a spatial overview of forecasted weekly bookings across UK regions, translating numerical forecasts into a geographic format that is easier to interpret at a glance.
+
+Rather than replacing the tabular or time-series forecasts, the map is designed to support rapid situational awareness for operational decision-makers. By visualising demand geographically, stakeholders can quickly identify:
+
+- Regions under high demand pressure for a selected week
+
+- Regions with lower expected demand where capacity may be reallocated
+
+- How demand shifts week-by-week as the selected time period changes
+
+Marker size and colour intensity represent forecasted booking volume, allowing non-technical users to assess relative demand without interpreting model outputs directly.
+
+This aligns with the Business Understanding and Data Understanding stages of CRISP-DM by ensuring that model outputs are presented in a format that supports real operational decisions, such as guide allocation, transport planning, and regional prioritisation.
+
+The Map View therefore acts as a decision-support visual layer, complementing the regression model and dashboard KPIs rather than introducing a new predictive task.
 
 ---
 
@@ -1072,6 +1093,29 @@ Possible next steps:
 -   Add a larger data set (with more variety) for the image based weather predictor to improve accuracy 
 
 -   Sales based dashboards which show turnover, Profit & Loss accounts, margins etc
+
+---
+
+## Learning Reflection & Development Journey
+
+
+This project represented a significant learning curve, particularly in applying machine learning concepts end-to-end for the first time.
+While I had prior professional experience working with BI tools, KPIs, and dashboarding for operational decision-making, the modelling,
+feature engineering, and evaluation aspects of predictive analytics were entirely new.
+
+To develop this project, I relied on a combination of:
+- Course material and walkthrough projects,
+- Official library documentation (e.g. pandas, scikit-learn, XGBoost, Streamlit),
+- Targeted internet searches to troubleshoot errors and deepen understanding,
+- Iterative experimentation through Jupyter notebooks.
+
+This mirrors real-world analytics work, where engineers and analysts frequently consult documentation and external resources
+to solve problems and validate approaches. All modelling logic, feature choices, and interpretations in this project reflect
+my own understanding and implementation.
+
+The project therefore demonstrates both technical learning and the practical problem-solving process required to build
+a working predictive analytics system from raw data through to a deployed dashboard.
+
 
 ---
 

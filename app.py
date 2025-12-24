@@ -31,9 +31,9 @@ def main():
     app.add_page("🏔️ Home / Project Summary", page_home.app)
     app.add_page("📊 EDA & Insights", page_eda.app)
     app.add_page("📈 Bookings Forecast", page_forecast.app)
-    app.add_page("📍 Map View", page_map.app)
     app.add_page("⚠️ Cancellation Risk", page_cancellation.app)
     app.add_page("🖼️ Weather from Image", page_weather_image.app)
+    app.add_page("📍 Map View", page_map.app)
     app.add_page("🔍 Model Report", page_report.app)
     app.add_page("Data & Docs", page_data_docs.app)
     

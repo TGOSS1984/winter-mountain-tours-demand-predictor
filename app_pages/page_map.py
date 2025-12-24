@@ -237,6 +237,12 @@ def app():
         "This helps Operations quickly see where staffing pressure is highest for the selected week."
     )
 
+    st.caption(
+        "For full model metrics, assumptions and limitations behind these forecasts, "
+        "see the **Model Report** page."
+    )
+
+
     csv_bytes = df_map.sort_values("forecast_bookings", ascending=False).to_csv(index=False).encode("utf-8")
     st.download_button(
         label="⬇️ Download map data (CSV)",
