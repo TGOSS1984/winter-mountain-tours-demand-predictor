@@ -1,29 +1,29 @@
 {
   "baseline": {
-    "MAE": 10.894308943089431,
-    "MAPE": 47.481343361546195,
-    "R2": 0.019004283572646163
+    "MAE": 14.71219512195122,
+    "MAPE": 16.511314634392985,
+    "R2": 0.5121951547889807
   },
   "linear_regression": {
-    "MAE": 7.946413292222221,
-    "MAPE": 37.22393238562736,
-    "R2": 0.460913376211019
+    "MAE": 9.05628160443948,
+    "MAPE": 10.251189302111005,
+    "R2": 0.8134091942470753
   },
   "random_forest": {
-    "MAE": 8.504796747967479,
-    "MAPE": 39.95653516561499,
-    "R2": 0.42571872291063584
+    "MAE": 9.967707317073172,
+    "MAPE": 11.280805259698576,
+    "R2": 0.7688976228320596
   },
   "xgboost_tuned": {
-    "MAE": 8.03718376159668,
-    "MAPE": 37.7603229184473,
-    "R2": 0.4772041440010071
+    "MAE": 9.373900413513184,
+    "MAPE": 10.697943470333561,
+    "R2": 0.7976915240287781
   },
   "best_params": {
-    "regressor__colsample_bytree": 1.0,
+    "regressor__colsample_bytree": 0.7,
     "regressor__learning_rate": 0.05,
     "regressor__max_depth": 3,
-    "regressor__min_child_weight": 3,
+    "regressor__min_child_weight": 5,
     "regressor__n_estimators": 100,
     "regressor__subsample": 0.7
   }

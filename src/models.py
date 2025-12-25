@@ -144,7 +144,9 @@ def forecast_weekly_bookings(
 
     # Model expects a DataFrame with one row
     X = row[features.REGRESSION_FEATURE_COLUMNS]
-    y_pred = model.predict(X)[0]
+    y_pred = float(model.predict(X)[0])
+    y_pred = max(0.0, y_pred)
+
 
     result = {
         "prediction": float(y_pred),
