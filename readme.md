@@ -494,33 +494,98 @@ This satisfies **Merit criterion 5.7** and the Distinction requirement for advan
 
 ---
 
-### 5.4 Model Performance Summary
+## 5.4 Model Performance Summary
 
-**Regression (Weekly Bookings – Tuned XGBoost)**
-
-- **MAE:** ~32.61 bookings  
-- **MAPE:** ~119.64%  
-- **R²:** ~–5.02  
-
-These metrics indicate that, on this particular synthetic dataset, the regression model struggles with high noise and variability.  
-This is discussed honestly on the **Model Report** page and in the notebook. For this project, the key learning outcome is the correct setup of the forecasting pipeline and evaluation process, rather than achieving a highly accurate real-world model.
-
-**Does the regression model meet the business requirement?**
-For this synthetic dataset, the regression model does not fully meet a strict business accuracy requirement (MAE and MAPE are relatively high). However, it successfully demonstrates the full forecasting workflow (data → features → model → evaluation → dashboard), which is the primary aim of this educational prototype.
-
-**Does the classification model meet the business requirement?**
-With a ROC AUC of ~0.63, the cancellation model shows moderate discriminatory power. It is acceptable as a prototype for prioritising higher-risk bookings, but would need further tuning and more realistic data before being used in production.
+This project was developed iteratively. During development, the **synthetic data generation logic** was refined to better reflect real-world constraints (for example, enforcing non-negative bookings and introducing more realistic regional demand levels).  
+As a result, **model performance improved significantly**, not due to changes in modelling complexity, but due to improvements in **data realism and stability**.
 
 ---
 
-**Classification (Cancellation Risk – Tuned XGBoost)**
+### Regression — Weekly Bookings Forecast (Tuned XGBoost)
 
-- **ROC AUC (XGBoost tuned):** ~0.6281  
+#### Initial Results (Early Synthetic Dataset)
 
-This is above random guessing (0.5) and indicates **moderate** ability to separate cancelled vs non-cancelled bookings.  
-The model is suitable as a **prototype** for early-stage risk prioritisation but would be improved before real-world use.
+| Metric | Value |
+|------|------|
+| **MAE** | ~32.61 bookings |
+| **MAPE** | ~119.64% |
+| **R²** | ~–5.02 |
 
-The Model Report page and notebooks include confusion matrices, ROC curves and narrative commentary clarifying these points, aligning with **LO5.2** and **LO4.2**.
+In the early version of the synthetic dataset, weekly bookings could take **negative or near-zero values** due to excessive noise relative to base demand.  
+This led to unstable percentage errors and a negative R², despite the modelling pipeline itself being correctly implemented.
+
+These results were documented transparently in the notebooks and on the **Model Report** page to demonstrate honest evaluation and reflection during development.
+
+---
+
+#### Updated Results (Refined Synthetic Dataset)
+
+After improving the synthetic data generation to:
+
+- Enforce **non-negative bookings**
+- Introduce **region-specific base demand levels**
+- Reduce excessive random noise
+- Add additional realistic regions (Peak District, Yorkshire Dales)
+
+the same modelling pipeline produced the following results:
+
+| Model | MAE | MAPE | R² |
+|-----|----|-----|---|
+| Baseline (Lag-1) | ~14.7 | ~16.5% | ~0.51 |
+| Linear Regression | ~9.1 | ~10.3% | ~0.81 |
+| Random Forest | ~10.0 | ~11.3% | ~0.77 |
+| **XGBoost (Tuned)** | **~9.4** | **~10.7%** | **~0.80** |
+
+These results indicate:
+
+- Forecast errors of roughly **±10 bookings per region per week**
+- Predictions typically within **~10% of actual values**
+- The model explains approximately **80% of weekly demand variation**
+
+**Does the regression model meet the business requirement?**  
+Yes. With more realistic synthetic data, the regression model provides forecasts accurate enough to support **capacity planning, guide rostering, and operational decision-making** at a regional level.
+
+---
+
+### Classification — Cancellation Risk (Tuned XGBoost)
+
+| Model | ROC AUC |
+|-----|--------|
+| Logistic Regression | ~0.625 |
+| Random Forest | ~0.564 |
+| **XGBoost (Tuned)** | **~0.626** |
+
+The cancellation model demonstrates **moderate discriminatory power**, performing consistently above random guessing (0.5).
+
+**Does the classification model meet the business requirement?**  
+Yes, as a **prototype**. The model is suitable for:
+
+- Flagging higher-risk bookings
+- Prioritising customer service outreach
+- Supporting early-stage operational risk awareness
+
+Given the synthetic nature of the data and the behavioural complexity of cancellations, a ROC AUC in the low-to-mid 0.6 range is realistic and acceptable for this stage.
+
+---
+
+### Key Learning & Interpretation
+
+- The largest performance gains came from **improving data realism**, not increasing model complexity.
+- This mirrors real-world analytics workflows, where **data quality often matters more than algorithm choice**.
+- The project demonstrates:
+  - End-to-end machine learning pipelines
+  - Proper evaluation and comparison of multiple models
+  - Honest reflection on limitations and subsequent improvements
+
+All metrics, plots, and interpretations are presented in the notebooks and surfaced clearly on the **Model Report** dashboard page, aligning with **LO4.2** and **LO5.2**.
+
+---
+
+### Note on Tests & Validation
+
+No automated tests rely on fixed performance thresholds, so no tests were broken by these changes.  
+All model evaluation outputs were regenerated by re-running the modelling notebooks after updating the data generation logic.
+
 
 **System Architecture Overview**
 

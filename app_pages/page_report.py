@@ -42,22 +42,62 @@ def app():
     st.markdown("""
 ### 🔍 Model Performance Summary (LO4.2)
 
-**Bookings Forecast Model (Regression)**  
+This project went through an **iterative modelling process**, reflecting how real-world analytics systems are refined as data quality and assumptions improve.
+
+---
+
+#### 📌 Initial Results (Early Synthetic Dataset)
+
+**Bookings Forecast Model (Regression – Initial Version)**  
 - Mean Absolute Error (MAE): **32.61 bookings**  
 - Mean Absolute Percentage Error (MAPE): **119.64%**  
 - R² Score: **-5.02**
 
-These results indicate that the regression model struggles with noise in the synthetic dataset, but it still provides directional insight for operational planning.  
-For the purposes of this prototype, the model **successfully answers the predictive task** by demonstrating a complete forecasting pipeline end-to-end.
+These early results were impacted by limitations in the initial synthetic data generation:
+- Weekly bookings could be **near-zero or negative** due to unbounded noise.
+- Region-level demand differences were **under-represented**.
+- Fewer regions were included, limiting variation.
+
+While this version still demonstrated a complete ML pipeline end-to-end, the metrics highlighted issues with data realism rather than model setup.
 
 ---
 
-**Cancellation Risk Model (Classification)**  
-- ROC AUC Score: **0.628**
+#### ✅ Improved Results (Refined Synthetic Dataset)
 
-This score is above random (0.5) and demonstrates moderate ability to separate cancelled vs non-cancelled bookings.  
-Therefore, the model **successfully answers the predictive task** of predicting cancellation probability for early-stage risk prioritisation.
+After refining the synthetic data to better reflect real-world constraints:
+- Bookings are generated from **positive base demand per region**.
+- Noise is constrained to prevent negative values.
+- Additional regions (**Peak District** and **Yorkshire Dales**) were added to increase realism and geographic coverage.
+
+**Bookings Forecast Model (Regression – Tuned XGBoost)**  
+- Mean Absolute Error (MAE): **~9.37 bookings**  
+- Mean Absolute Percentage Error (MAPE): **~10.70%**  
+- R² Score: **~0.80**
+
+These results show a substantial improvement in model performance and stability, indicating that the regression model now explains the majority of variance in weekly demand while remaining interpretable and operationally useful.
+
+---
+
+#### 🚫 Cancellation Risk Model (Classification)
+
+**Cancellation Risk Model**  
+- ROC AUC Score: **~0.63**
+
+The classification model performs above random chance (0.5) and demonstrates moderate ability to separate cancelled vs non-cancelled bookings.  
+It is suitable as a **prototype risk-ranking tool**, enabling Customer Service teams to prioritise proactive communication for higher-risk bookings.
+
+---
+
+#### 🧠 Interpretation
+
+The improvement between the initial and refined results reflects:
+- Better alignment between synthetic data assumptions and real-world constraints.
+- Increased signal-to-noise ratio for learning.
+- A more realistic operational scenario for staffing and planning decisions.
+
+This iterative refinement mirrors real analytics workflows, where data quality and modelling assumptions are progressively improved rather than fixed from the outset.
 """)
+
 
 
     tab_reg, tab_clf = st.tabs(["Bookings Forecast", "Cancellation Risk"])
