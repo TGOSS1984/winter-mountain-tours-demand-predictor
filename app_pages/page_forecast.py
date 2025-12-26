@@ -74,9 +74,9 @@ def app():
             st.info("""
                 **Model Performance (LO4.2):**  
 This forecast is generated using the tuned XGBoost regression model, which achieved:  
-- MAE ≈ **32.6** bookings  
-- MAPE ≈ **119.6%**  
-- R² ≈ **-5.02**
+- MAE ≈ **9.4** bookings  
+- MAPE ≈ **10.7%**  
+- R² ≈ **-0.80**
 
 These results reflect the high variability of synthetic demand data.  
 For demonstration purposes, the model **meets the requirement** of providing a functional weekly forecasting pipeline.
