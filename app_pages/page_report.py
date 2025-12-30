@@ -4,6 +4,8 @@ import streamlit as st
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from xgboost import XGBModel
+import json
+from pathlib import Path
 
 from src import data_loaders, evaluate, visualize
 from src.ui import inject_global_css
@@ -78,7 +80,7 @@ These results show a substantial improvement in model performance and stability,
 
 ---
 
-#### 🚫 Cancellation Risk Model (Classification)
+#### ⚠️ Cancellation Risk Model (Classification)
 
 **Cancellation Risk Model**  
 - ROC AUC Score: **~0.63**
@@ -98,6 +100,14 @@ The improvement between the initial and refined results reflects:
 This iterative refinement mirrors real analytics workflows, where data quality and modelling assumptions are progressively improved rather than fixed from the outset.
 """)
 
+    # --- Load offline regression metrics (source of truth from notebooks) ---
+    REG_METRICS_PATH = Path("models/v1_bookings_model_metrics.json")
+    reg_metrics = None
+    if REG_METRICS_PATH.exists():
+        with open(REG_METRICS_PATH, "r", encoding="utf-8") as f:
+            reg_metrics = json.load(f)
+    else:
+        st.warning("Offline regression metrics not found at models/v1_bookings_model_metrics.json")
 
 
     tab_reg, tab_clf = st.tabs(["Bookings Forecast", "Cancellation Risk"])
@@ -106,55 +116,45 @@ This iterative refinement mirrors real analytics workflows, where data quality a
     with tab_reg:
         st.subheader("Weekly Bookings – Regression Model")
 
-        train_reg, test_reg = data_loaders.load_regression_train_test()
-        model = data_loaders.load_bookings_model()
-        model = _ensure_xgb_gpu_id(model)
+        st.markdown("**Offline test set metrics (from notebooks):**")
 
-        X_test = test_reg[
-            [
-                "region",
-                "weather_severity_bin",
-                "mean_temp_c",
-                "precip_mm",
-                "snowfall_flag",
-                "wind_speed_kph",
-                "visibility_km",
-                "year",
-                "week_number",
-                "month",
-                "is_bank_holiday_week",
-                "is_peak_winter",
-                "lag_1w_bookings",
-                "lag_4w_mean",
-                "lag_52w_bookings",
-            ]
-        ]
-        y_test = test_reg["bookings_count"]
+        if reg_metrics and "xgboost_tuned" in reg_metrics:
+            xgb = reg_metrics["xgboost_tuned"]
 
-        y_pred = model.predict(X_test)
-        metrics = evaluate.regression_metrics(y_test, y_pred)
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("MAE", f"{xgb['MAE']:.2f}")
+            with col2:
+                st.metric("MAPE", f"{xgb['MAPE']:.2f}%")
+            with col3:
+                st.metric("R²", f"{xgb['R2']:.3f}")
 
-        st.markdown("**Test set metrics:**")
-        st.table(pd.DataFrame(metrics, index=["XGBoost (tuned)"]))
+            # Comparison Table
+            rows = []
+            for name in ["baseline", "linear_regression", "random_forest", "xgboost_tuned"]:
+                if name in reg_metrics:
+                    m = reg_metrics[name]
+                    rows.append({"model": name, "MAE": m["MAE"], "MAPE": m["MAPE"], "R2": m["R2"]})
 
-        # Actual vs Predicted plot
-        st.markdown("**Actual vs Predicted (test set)**")
-        import matplotlib.pyplot as plt
+            if rows:
+                st.markdown("**Model comparison (offline test set):**")
+                st.table(pd.DataFrame(rows).set_index("model"))
 
-        fig1, ax1 = plt.subplots(figsize=(5, 5))
-        ax1.scatter(y_test, y_pred, alpha=0.6)
-        min_val = min(y_test.min(), y_pred.min())
-        max_val = max(y_test.max(), y_pred.max())
-        ax1.plot([min_val, max_val], [min_val, max_val], "r--")
-        ax1.set_xlabel("Actual bookings")
-        ax1.set_ylabel("Predicted bookings")
-        ax1.set_title("Actual vs Predicted – Weekly Bookings")
-        st.pyplot(fig1)
+            # tuned params
+            if "best_params" in reg_metrics:
+                with st.expander("Best tuned hyperparameters (XGBoost)"):
+                    st.json(reg_metrics["best_params"])
+
+        else:
+            st.info("No offline regression metrics available yet. Re-run the regression notebook to regenerate metrics JSON.")
+
 
         st.caption(
-            "Points lying close to the diagonal indicate good agreement between "
-            "predicted and actual weekly bookings."
+            "Note: diagnostic plots (Actual vs Predicted, residuals) are generated in the modelling notebook "
+            "and saved under reports/figures/ for reproducibility. The dashboard displays the offline test metrics "
+            "as the source of truth."
         )
+
 
     # --- Classification tab ---
     with tab_clf:
