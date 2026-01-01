@@ -17,6 +17,8 @@
 
 ---
 
+![Image from mockup](app_pages/assets/screenshots/demand_predictor_screen_home_mockup.png)
+
 A Streamlit-based predictive analytics app that forecasts **weekly winter tour bookings by region** and predicts **cancellation risk** for individual bookings.
 
 This project is built for **Portfolio Project 5: Predictive Analytics** on the Code Institute **Full Stack Software Development Diploma (Predictive Analytics)**.
@@ -665,11 +667,17 @@ It is explicitly designed as a safe, isolated prototype that cannot affect the p
 The Streamlit dashboard is implemented as a **multi-page app** under `app_pages/`:
 
 1. **Home**  
+
+![Home Page](app_pages/assets/screenshots/demand_predictor_screen_home.PNG)
+
    - Project overview  
    - Business context and high-level explanation of ML tasks  
    - Guidance on how to use the dashboard
 
 2. **EDA & Insights**  
+
+![EDA Page](app_pages/assets/screenshots/demand_predictor_screen_eda.PNG)
+
    - Seasonal trends in bookings  
    - Holiday uplift plots  
    - Cancellation rates vs weather severity  
@@ -677,30 +685,56 @@ The Streamlit dashboard is implemented as a **multi-page app** under `app_pages/
    - Textual interpretations beneath each plot
 
 3. **Bookings Forecast**  
+
+![Forecast Page](app_pages/assets/screenshots/demand_predictor_screen_bookings.PNG)
+
    - Inputs: region, week start date, scenario toggles (bank holiday, peak winter, weather severity bin)  
    - Output: forecast bookings for that week + summary of input features used  
    - Explanation of model performance (MAE / MAPE / R²) and limitations
 
 4. **Cancellation Risk**  
+
+![Cancellation Page](app_pages/assets/screenshots/demand_predictor_screen_cancel.PNG)
+
    - Inputs: booking-level attributes (e.g. region, party size, lead time, weather severity scenario)  
    - Output: cancellation probability and risk label (e.g. low/moderate/high)  
    - Threshold slider concept discussed in narrative
 
 5. **Model Report**  
+
+![Model Page](app_pages/assets/screenshots/demand_predictor_screen_home_model.PNG)
+
    - Summary of regression and classification metrics  
    - ROC and residuals plots  
    - Brief explanation of whether models meet their intended purpose
 
-6. **Data & Docs**  
+6. **Data & Docs** 
+
+![Data Page](app_pages/assets/screenshots/demand_predictor_screen_home_data.PNG)
+
    - Data dictionary and feature descriptions  
    - Links to notebooks  
    - High-level explanation of data lineage (raw → processed)
 
 7. **Weather from Image (Image-Based Severity Classifier)**  
+
+![Image Page](app_pages/assets/screenshots/demand_predictor_screen_image.PNG)
+
    - Upload an image (JPG/PNG/WebP) showing mountain conditions 
    - View the uploaded image directly in the dashboard  
    - Run the Weather Severity Classifier to predict: severity label/class probabilities for transparency
    - Read plain-language interpretation text explaining what each severity category means
+
+8. **Spatial Demand Overview (Map View)** 
+
+![Map Page](app_pages/assets/screenshots/demand_predictor_screen_map.PNG)
+
+    - Visualise forecasted weekly bookings by region on a geographic map of the UK
+    - Use a time slider to scrub through weeks and observe how demand shifts spatially
+    - Adjust scenario inputs (bank holidays, peak winter, weather severity) to explore what-if demand patterns
+    - Interpret demand intensity using marker size and colour (larger / warmer markers = higher forecasted bookings)
+    - Quickly identify regional pressure points to support guide rostering, capacity planning, and operational decision-making
+
 
 This page-level breakdown fulfils **LO6.1**.
 
