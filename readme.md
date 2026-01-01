@@ -17,7 +17,7 @@
 
 ---
 
-![Image from mockup](app_pages/assets/screenshots/demand_predictor_screen_home_mockup.png)
+![Image from mockup](app_pages/assets/screenshots/demand_predictor_screen_home_mockup.PNG)
 
 A Streamlit-based predictive analytics app that forecasts **weekly winter tour bookings by region** and predicts **cancellation risk** for individual bookings.
 
