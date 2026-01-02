@@ -25,8 +25,6 @@ def _patch_xgboost(obj: Any) -> Any:
     attributes expected by some XGBoost versions ('gpu_id', 'predictor',
     'use_label_encoder') are always present.
 
-    This avoids AttributeError when calling get_params()/predict()
-    on models that were trained under a slightly different XGBoost version.
     """
     # Case 1: plain XGBModel
     if isinstance(obj, XGBModel):
@@ -52,7 +50,7 @@ def _patch_xgboost(obj: Any) -> Any:
 def load_weekly_regression_data() -> pd.DataFrame:
     """
     Load the weekly region-level dataset used for regression modelling.
-    This is useful for the EDA page and for checking forecast context.
+    
     """
     path = DATA_PROCESSED / "weekly_bookings_regression.csv"
     return pd.read_csv(path, parse_dates=["week_start"])
@@ -62,7 +60,7 @@ def load_weekly_regression_data() -> pd.DataFrame:
 def load_bookings_classification_data() -> pd.DataFrame:
     """
     Load the booking-level dataset used for cancellation classification.
-    This is useful for summary stats and example bookings in the dashboard.
+   
     """
     path = DATA_PROCESSED / "bookings_for_classification.csv"
     return pd.read_csv(
@@ -74,9 +72,7 @@ def load_bookings_classification_data() -> pd.DataFrame:
 @lru_cache(maxsize=1)
 def load_regression_train_test() -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Load train/test splits for regression. Useful if we want to display
-    metrics or actual vs predicted plots in the dashboard without
-    re-running notebooks.
+    Load train/test splits for regression.
     """
     train_path = DATA_PROCESSED / "train_regression.csv"
     test_path = DATA_PROCESSED / "test_regression.csv"
@@ -134,7 +130,7 @@ def load_cancellation_model():
 def load_model_metrics(filename: str) -> dict:
     """
     Load a JSON metrics summary created by the modelling notebooks.
-    For example:
+    eg:
     - v1_bookings_model_metrics.json
     - v1_cancel_model_metrics.json
     """

@@ -62,7 +62,7 @@ def app():
             label = result["label"]
             proba = result.get("proba", {})
 
-            # Human-friendly label explanation
+            # Accessible label explanation
             label_descriptions = {
                 "mild": "Conditions look relatively clear or benign.",
                 "moderate": "Some snow, cloud or reduced visibility is present.",
@@ -102,13 +102,13 @@ def app():
                 )
 
         except RuntimeError as e:
-            # Model not available (e.g. missing .pkl) – fail gracefully
+            # Model not available fallback
             st.error(
                 "Weather severity model not available. "
                 "Ensure `models/weather_severity_model.pkl` has been "
                 "trained and committed."
             )
             st.caption(str(e))
-        except Exception as e:  # pragma: no cover - defensive catch-all
+        except Exception as e:  # pragma: no cover , defensive addition
             st.error("Something went wrong while classifying the image.")
             st.caption(str(e))

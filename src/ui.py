@@ -5,14 +5,13 @@ import streamlit as st
 
 def inject_global_css() -> None:
     """
-    Inject a small set of global CSS tweaks for a cleaner, card-based layout.
+    Global CSS tweaks & font awesome link
 
-    Safe for deployment: pure front-end styling, no new dependencies.
     """
     st.markdown(
         """
+    
         <style>
-        
         /* Sidebar (navigation bar) background */
         section[data-testid="stSidebar"] {
             background-color: #404e64 !important;

@@ -29,7 +29,9 @@ View PP4 here: [Live Site](https://uk-winter-mountain-tours-v2-c6f21d80d2c8.hero
 
 PP5 adds the **decision-support analytics layer**: forecasting demand, predicting cancellations, and surfacing insights about weather, holidays, and seasonality.
 
-This project has been a major learning curve for me, particularly in understanding how different components of a predictive analytics workflow fit together. Before this project, I had limited experience with tools such as Jupyter Notebooks, Streamlit, pandas, NumPy, and XGBoost, and building an end-to-end pipeline—from data collection to deployment—required significant study, experimentation and troubleshooting.
+This project has been a major learning curve for me, particularly in understanding how different components of a predictive analytics workflow fit together. Before this project, I had limited experience with tools such as Jupyter Notebooks, Streamlit, pandas, NumPy, and XGBoost, and building an end-to-end pipeline—from data collection to deployment—required significant study, experimentation and troubleshooting. 
+
+As no suitable public dataset existed for my specific domain, I designed and generated a fully synthetic dataset tailored to my winter mountain tours website, allowing the project to closely reflect real-world booking, weather, and operational patterns while deepening my understanding of data modelling and feature design.
 
 To support my learning, I used a mixture of course material, internet searches, technical documentation and community discussions to understand errors, improve my approach and validate best practices. I have been careful not just to copy solutions, but to understand each step, document issues thoroughly, and apply the concepts independently across the project.
 
@@ -662,6 +664,8 @@ It is explicitly designed as a safe, isolated prototype that cannot affect the p
 
 ## 6. Dashboard Design & Data Visualisation
 
+The dashboard was designed with a strong focus on clarity, accessibility, and user experience. A custom CSS layer was applied to create a consistent visual identity aligned with the project theme, including reuse of the project logo from Portfolio Project 4 to maintain continuity across the portfolio. Emojis were intentionally used within page titles and navigation to provide quick visual cues, improve scannability, and enhance accessibility for non-technical users, while remaining fully compatible with Streamlit’s native components. Data visualisations prioritise readability and interpretability through clear labelling, restrained colour usage, and contextual annotations, ensuring insights can be understood quickly by both technical and non-technical stakeholders.
+
 ### 6.1 Dashboard Pages
 
 The Streamlit dashboard is implemented as a **multi-page app** under `app_pages/`:
@@ -1274,6 +1278,8 @@ Each outcome is supported by concrete code, notebooks, and deployed app behaviou
 
 -   **Google Images** used creative commons licence for some imagery for AI traning, however most images are my own
 
--   **Chat GPT** was used to support with readme structuring & layout
+-   **Chat GPT** was used to support with readme structuring & layout. Alos used an AI assist with naming conventions for fields found in info.py
+
+-   **Google Search/Reddit/Youtube/AI Assistance** Were used to support with general troubleshooting and for ideas to build the streamlit app
 
 -   Any other referenced documentation or blog posts are cited through comments in the notebooks where relevant.

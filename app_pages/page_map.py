@@ -12,8 +12,7 @@ from src.ui import inject_global_css
 @lru_cache(maxsize=256)
 def _cached_forecast(region: str, week_start_str: str, scenario_key: str) -> float:
     """
-    Cached forecast wrapper to avoid re-running model inference repeatedly when
-    scrubbing through weeks or re-rendering Streamlit.
+    Cached forecast wrapper to avoid re-running model when adjusting weeks
     """
     week_start = pd.to_datetime(week_start_str)
     # scenario_key is already encoded; decode it back to dict safely

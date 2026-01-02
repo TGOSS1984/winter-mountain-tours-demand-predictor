@@ -1,5 +1,8 @@
 # src/info.py
 
+# Field descriptions were refined with AI assistance to improve
+# clarity, consistency, and alignment with analytics terminology.
+
 DATA_FIELDS = {
     "region": "Tour region (categorical)",
     "bookings_count": "Weekly bookings target",

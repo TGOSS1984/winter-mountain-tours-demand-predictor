@@ -14,7 +14,7 @@ from src.ui import inject_global_css
 def _ensure_xgb_gpu_id(model):
     """
     Heroku CPU builds of xgboost still expect a `gpu_id` attribute on the
-    underlying XGBModel in some paths. This helper safely patches it.
+    XGBModel in some paths. Patch added.
     """
     if isinstance(model, Pipeline):
         est = model.steps[-1][1]
@@ -100,7 +100,7 @@ The improvement between the initial and refined results reflects:
 This iterative refinement mirrors real analytics workflows, where data quality and modelling assumptions are progressively improved rather than fixed from the outset.
 """)
 
-    # --- Load offline regression metrics (source of truth from notebooks) ---
+    # --- Load offline regression metrics (from notebooks) ---
     REG_METRICS_PATH = Path("models/v1_bookings_model_metrics.json")
     reg_metrics = None
     if REG_METRICS_PATH.exists():
