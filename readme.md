@@ -729,11 +729,11 @@ The Streamlit dashboard is implemented as a **multi-page app** under `app_pages/
 
 ![Map Page](app_pages/assets/screenshots/demand_predictor_screen_map.PNG)
 
-    - Visualise forecasted weekly bookings by region on a geographic map of the UK
-    - Use a time slider to scrub through weeks and observe how demand shifts spatially
-    - Adjust scenario inputs (bank holidays, peak winter, weather severity) to explore what-if demand patterns
-    - Interpret demand intensity using marker size and colour (larger / warmer markers = higher forecasted bookings)
-    - Quickly identify regional pressure points to support guide rostering, capacity planning, and operational decision-making
+  - Visualise forecasted weekly bookings by region on a geographic map of the UK
+  - Use a time slider to scrub through weeks and observe how demand shifts spatially
+  - Adjust scenario inputs (bank holidays, peak winter, weather severity) to explore what-if demand patterns
+  - Interpret demand intensity using marker size and colour (larger / warmer markers = higher forecasted bookings)
+  - Quickly identify regional pressure points to support guide rostering, capacity planning, and operational decision-making
 
 
 This page-level breakdown fulfils **LO6.1**.
@@ -847,15 +847,23 @@ project/
 │   ├─ page_eda.py
 │   ├─ page_forecast.py
 │   ├─ page_cancellation.py
-│   └─ page_report.py
+│   ├─ page_report.py
+|   ├─ page_map.py
+|   ├─ page_weather_image.py 
+|   └─ assets/
 │
 ├─ src/
 │   ├─ data_loaders.py
 │   ├─ features.py
 │   ├─ models.py
+|   ├─ geo.py
+|   ├─ image_features.py
 │   ├─ evaluate.py
+|   ├─ visualise.py
 │   └─ ui.py
 │
+├─ docs/
+│   └─ data_model.md
 ├─ models/
 │   ├─ bookings_model.pkl
 │   └─ cancel_model.pkl
@@ -870,7 +878,9 @@ project/
 │   ├─ 01_cleaning.ipynb
 │   ├─ 02_feature_engineering.ipynb
 │   ├─ 03_model_regression.ipynb
-│   └─ 04_model_classification.ipynb
+│   ├─ 04_model_classification.ipynb
+|   ├─ 05_image_weather_classifier.ipynb
+|   └─ eda_insights.ipynb
 │
 └─ reports/
     └─ figures/
