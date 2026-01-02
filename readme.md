@@ -549,6 +549,23 @@ These results indicate:
 **Does the regression model meet the business requirement?**  
 Yes. With more realistic synthetic data, the regression model provides forecasts accurate enough to support **capacity planning, guide rostering, and operational decision-making** at a regional level.
 
+#### Regression Diagnostics – Actual vs Predicted (Test Set)
+
+![Actual vs Predicted – Tuned XGBoost](reports/figures/regression_actual_vs_predicted_xgb.png)
+
+The scatter plot above compares **actual weekly bookings** against **model predictions**
+for the held-out test set.
+
+- Points clustering closely around the diagonal indicate strong predictive alignment
+- There is no clear systematic under- or over-prediction across demand levels
+- Variance increases slightly at higher booking volumes, which is expected in real-world demand data
+
+This plot was generated in the modelling notebook (`03_model_regression.ipynb`) and is used
+to validate model fit during development.  
+For usability reasons, only **summary metrics and interpretations** are surfaced in the Streamlit dashboard,
+while detailed diagnostics are documented here.
+
+
 ---
 
 ### Classification — Cancellation Risk (Tuned XGBoost)
