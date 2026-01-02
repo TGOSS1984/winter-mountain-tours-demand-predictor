@@ -19,6 +19,8 @@
 
 ![Image from mockup](app_pages/assets/screenshots/demand_predictor_screen_home_mockup.PNG)
 
+[Live Streamlit App](https://winter-tour-predictor-ce48d589f61d.herokuapp.com/)
+
 A Streamlit-based predictive analytics app that forecasts **weekly winter tour bookings by region** and predicts **cancellation risk** for individual bookings.
 
 This project is built for **Portfolio Project 5: Predictive Analytics** on the Code Institute **Full Stack Software Development Diploma (Predictive Analytics)**.
@@ -551,7 +553,7 @@ Yes. With more realistic synthetic data, the regression model provides forecasts
 
 #### Regression Diagnostics – Actual vs Predicted (Test Set)
 
-![Actual vs Predicted – Tuned XGBoost](reports/figures/regression_actual_vs_predicted_xgb.png)
+![Actual vs Predicted – Tuned XGBoost](app_pages/assets/screenshots/regression_actual_vs_predicted_xgb.png)
 
 The scatter plot above compares **actual weekly bookings** against **model predictions**
 for the held-out test set.
