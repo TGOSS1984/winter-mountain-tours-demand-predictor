@@ -5,7 +5,7 @@ import streamlit as st
 
 def inject_global_css() -> None:
     """
-    Global CSS tweaks & font awesome link
+    Global CSS tweaks 
 
     """
     st.markdown(

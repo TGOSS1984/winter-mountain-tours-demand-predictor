@@ -22,9 +22,9 @@ def app():
         """
     )
 
-    # -------------------------
+    
     # Data Lineage
-    # -------------------------
+   
     st.subheader("Data Lineage")
 
     st.markdown(
@@ -41,9 +41,9 @@ def app():
         """
     )
 
-    # -------------------------
+    
     # Data Dictionary
-    # -------------------------
+    
     st.subheader("Data Dictionary (Key Fields)")
 
     data_dict = {
@@ -74,9 +74,9 @@ def app():
 
     st.table(df_dict)
 
-    # -------------------------
+    
     # Sample Data Outputs
-    # -------------------------
+   
     st.subheader("Sample Data")
 
     weekly = data_loaders.load_weekly_regression_data()
@@ -87,9 +87,9 @@ def app():
     st.markdown("**Booking-level classification dataset (top 10 rows):**")
     st.dataframe(bookings.head(10))
 
-    # -------------------------
+    
     # Notebook Links (Displayed as text)
-    # -------------------------
+    
     st.subheader("Notebooks")
 
     st.markdown(
@@ -106,9 +106,9 @@ def app():
         """
     )
 
-    # -------------------------
+    
     # Model Version Info
-    # -------------------------
+    
     st.subheader("Model Artefacts & Version Info")
 
     try:

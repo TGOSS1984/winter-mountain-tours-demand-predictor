@@ -8,7 +8,7 @@ from typing import Dict, Any
 import pandas as pd
 
 
-# Columns expected by the regression model (must match notebook training)
+# Columns expected by the regression model
 REGRESSION_CATEGORICAL = ["region", "weather_severity_bin"]
 REGRESSION_NUMERIC = [
     "mean_temp_c",
@@ -28,7 +28,7 @@ REGRESSION_NUMERIC = [
 
 REGRESSION_FEATURE_COLUMNS = REGRESSION_CATEGORICAL + REGRESSION_NUMERIC
 
-# Columns expected by the classification model (must match notebook training)
+# Columns expected by the classification model
 CLASSIFICATION_CATEGORICAL = [
     "region",
     "route_difficulty",

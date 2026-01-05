@@ -90,7 +90,7 @@ For demonstration purposes, the model **meets the requirement** of providing a f
                 pred = result["prediction"]
                 inputs = result["inputs"]
 
-                # week_start may be a pandas Timestamp; format it safely
+                # week_start safe format
                 week_start_value = inputs.get("week_start")
                 # Handles Timestamp, datetime, or string
                 week_start_str = pd.to_datetime(week_start_value).strftime("%Y-%m-%d")

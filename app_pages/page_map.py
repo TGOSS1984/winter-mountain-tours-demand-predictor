@@ -54,7 +54,7 @@ def app():
     weekly["week_start"].dropna().drop_duplicates().sort_values().reset_index(drop=True)
     )
 
-    # Default to last available week (often most relevant)
+    # Default to last available week
     default_idx = len(available_weeks) - 1 if len(available_weeks) > 0 else 0
 
     st.markdown("### 🗓️ Week selection")
@@ -69,7 +69,7 @@ def app():
     chosen_week = pd.to_datetime(available_weeks.iloc[week_idx])
     st.session_state["map_week_idx"] = week_idx
 
-    # Optional fallback selector (useful for debugging)
+    # Optional fallback selector
     with st.expander("Alternative week picker (debug)", expanded=False):
         week_start_pick = st.selectbox(
             "Pick a week (start date)",
@@ -185,7 +185,7 @@ def app():
     col3.metric("Max forecast", f"{df_map['forecast_bookings'].max():.1f}")
 
 
-    # 5E: quick summary of top regions
+    # quick summary of top regions
     if not df_map.empty:
         top = df_map.sort_values("forecast_bookings", ascending=False).head(3)
         st.markdown("### 🔥 Top forecasted demand (this week)")

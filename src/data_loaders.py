@@ -2,14 +2,14 @@
 
 from pathlib import Path
 from functools import lru_cache
-from typing import Any  # NEW
+from typing import Any
 
 import pandas as pd
 import joblib
 
-# NEW: imports to help patch XGBoost models inside sklearn Pipelines
-from xgboost import XGBModel  # NEW
-from sklearn.pipeline import Pipeline  # NEW
+# imports to help patch XGBoost models inside sklearn Pipelines
+from xgboost import XGBModel
+from sklearn.pipeline import Pipeline
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -18,7 +18,7 @@ DATA_PROCESSED = DATA_DIR / "processed"
 MODELS_DIR = BASE_DIR / "models"
 
 
-# NEW: helper to patch XGBoost models so version-mismatch attrs exist
+# helper to patch XGBoost models so version-mismatch attrs exist
 def _patch_xgboost(obj: Any) -> Any:
     """
     Patch XGBoost estimators (optionally inside a sklearn Pipeline) so that
@@ -108,7 +108,7 @@ def load_bookings_model():
     """
     model_path = MODELS_DIR / "v1_bookings_model.pkl"
     model = joblib.load(model_path)
-    # PATCH: ensure XGBoost inside this pipeline has expected attributes
+    # ensure XGBoost inside this pipeline has expected attributes
     model = _patch_xgboost(model)
     return model
 
@@ -122,7 +122,7 @@ def load_cancellation_model():
     """
     model_path = MODELS_DIR / "v1_cancel_model.pkl"
     model = joblib.load(model_path)
-    # PATCH: ensure XGBoost inside this pipeline has expected attributes
+    # ensure XGBoost inside this pipeline has expected attributes
     model = _patch_xgboost(model)
     return model
 
