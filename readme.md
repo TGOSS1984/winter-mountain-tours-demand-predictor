@@ -94,7 +94,7 @@ The dashboard is built in Streamlit, powered by tabular, synthetic but realistic
 11. [Ethical Considerations](#11-ethical-considerations)  
 
 12. [Future Improvements](#12-future-improvements)  
-      [Learning Reflection & Development Journey](#learning-reflection--development-journey)  
+    12.1 [Learning Reflection & Development Journey](#121-learning-reflection--development-journey)  
 
 13. [Learning Outcomes Mapping (LO1–LO7)](#13-learning-outcomes-mapping-lo1lo7)  
 
@@ -192,7 +192,7 @@ These metrics are reported in the modelling notebooks and surfaced in narrative 
 
 ### 1.5 Where the Image Model Fits in CRISP-DM
 
-The Weather Severity Classifier functions as a parallel modelling stream outside the main CRISP-DM pipeline.
+The Weather Severity Classifier runs as a separate mini CRISP-DM cycle.
 
 - It has its own small “Data Understanding → Modelling → Evaluation” cycle.
 
@@ -276,6 +276,8 @@ From the user stories, the key business requirements are:
 | BR2 | Cancellation risk prediction              | Cancellation rate by region/season; cancellation rate by weather severity                        | **Classification** predicting `was_cancelled` at booking level            |
 | BR3 | Explain drivers of demand & cancellations | Feature importance plots; holiday uplift bars; cancellation vs weather severity plots            | Model feature importance / coefficients; optional SHAP-style interpretation |
 | BR4 | Interactive dashboard for stakeholders    | Streamlit pages with region pickers, threshold sliders, and narrative text under plots           | Integration of trained models into a multipage Streamlit app              |
+| BR5 | Image-based weather interpretation | Image upload preview; predicted severity label (mild/moderate/severe); class probability display with explanatory text | Image-based classification using extracted visual features (brightness, colourfulness, contrast) |
+
 
 This satisfies the “rationale to map business requirements to data visualisations and ML tasks” requirement (LO2.1, LO2.2, LO3.2).
 
@@ -377,17 +379,24 @@ The project uses a combination of **synthetic data** (for bookings, cancellation
 
 All datasets are clearly saved under `data/raw/`, `data/interim/` and `data/processed/` as per the project structure.
 
-Dataset sizes (synthetic):
+**Dataset sizes (synthetic):**
 
-- Weekly regression dataset: ~N rows (weeks × regions), ~M features
+- **Weekly regression dataset:**  
+  1,045 rows (weekly observations × regions) with **17 engineered features**, including calendar, weather, and lag-based predictors.
 
-- Booking-level classification dataset: ~K rows, M2 features
+- **Booking-level classification dataset:**  
+  Generated at booking granularity (multiple bookings per region-week), resulting in several thousand rows with booking-specific features such as party size, lead time, and route difficulty.
 
-- Regions: Lake District, Snowdonia, Scottish Highlands
+- **Regions included:**  
+  Lake District, Snowdonia, Scottish Highlands, Yorkshire Dales, Peak District
 
-- Timeframe: 12 months of simulated winter-focused data
+- **Timeframe:**  
+  Weekly data spanning **December 2024 to December 2028**, with a winter-focused demand profile.
 
-(PLACEHOLDER - FILL IN NUMBERS)
+- **Date range:**  
+  - Earliest week start: **2024-12-30**  
+  - Latest week start: **2028-12-25**
+
 
 ---
 
@@ -427,7 +436,7 @@ To better understand the drivers of weekly tour demand, a correlation matrix was
 Lagged demand features are the strongest predictors - 
 
 - lag_4w_mean (~0.56), lag_1w_bookings (~0.49), and lag_52w_bookings (~0.48) show the highest positive correlation with weekly bookings.
-- lag_4w_mean (~0.56), lag_1w_bookings (~0.49), and lag_52w_bookings (~0.48) show the highest positive correlation with weekly bookings.
+- This supports the hypothesis that recent and seasonal historical demand is a strong indicator of future demand.
 
 Calendar effects are meaningful but secondary - 
 
@@ -587,6 +596,8 @@ These results indicate:
 
 **Does the regression model meet the business requirement?**  
 Yes. With more realistic synthetic data, the regression model provides forecasts accurate enough to support **capacity planning, guide rostering, and operational decision-making** at a regional level.
+
+NOTE: The data generator was refined to remove unrealistic artefacts (e.g., negative bookings), not to optimise for any specific model.
 
 #### Regression Diagnostics – Actual vs Predicted (Test Set)
 
@@ -1298,7 +1309,7 @@ Possible next steps:
 
 ---
 
-## Learning Reflection & Development Journey
+### 12.1 Learning Reflection & Development Journey
 
 
 This project represented a significant learning curve, particularly in applying machine learning concepts end-to-end for the first time.
@@ -1365,10 +1376,10 @@ Each outcome is supported by concrete code, notebooks, and deployed app behaviou
 
 -   **XGBoost, scikit-learn, pandas, NumPy, Streamlit, matplotlib, seaborn** -- open-source libraries that made the analysis and modelling possible.
 
--   **Google Images** used creative commons licence for some imagery for AI traning, however most images are my own
+-   **Images** primarily my own photos. Where third-party images were used for prototyping, they were selected from permissive/attribution-friendly sources and are credited where applicable.
 
--   **Chat GPT** was used to support with readme structuring & layout along with assesment criteria mapping. Also used an AI assist with naming conventions for fields found in info.py
+-   **Chat GPT** was used to support with readme structuring, wording & layout along with assesment criteria mapping. Also used to support with naming conventions for fields found in info.py for consistency
 
--   **Google Search/Reddit/Youtube/AI Assistance** Were used to support with general troubleshooting and for ideas to build the streamlit app
+-   **External resources (official docs, community forums, tutorials, AI assistance)** were used for troubleshooting; key implementation decisions are documented in notebooks and commit history.
 
 -   Any other referenced documentation or blog posts are cited through comments in the notebooks where relevant.
