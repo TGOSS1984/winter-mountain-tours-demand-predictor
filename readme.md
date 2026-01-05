@@ -66,6 +66,7 @@ The dashboard is built in Streamlit, powered by tabular, synthetic but realistic
    4.1 [Data Sources](#41-data-sources)  
    4.2 [Targets](#42-targets)  
    4.3 [Feature Set](#43-feature-set)  
+   4.4 [Feature Correlation Analysis (EDA Insight)](#44-feature-correlation-analysis-eda-insight)  
 
 5. [Modelling & Evaluation](#5-modelling--evaluation)  
    5.1 [ML Business Case – Weekly Bookings Forecast (Regression)](#51-ml-business-case--weekly-bookings-forecast-regression)  
@@ -415,6 +416,41 @@ These features are created in `01_cleaning.ipynb` and `02_feature_engineering.ip
 
 ---
 
+### 4.4 Feature Correlation Analysis (EDA Insight)
+
+To better understand the drivers of weekly tour demand, a correlation matrix was produced during exploratory data analysis. This visualisation highlights linear relationships between weekly bookings and key calendar, weather, and lag-based features.
+
+![Correlation Matrix](app_pages/assets/screenshots/correlation_matrix_weekly.png)
+
+**Key Observations**
+
+Lagged demand features are the strongest predictors - 
+
+- lag_4w_mean (~0.56), lag_1w_bookings (~0.49), and lag_52w_bookings (~0.48) show the highest positive correlation with weekly bookings.
+- lag_4w_mean (~0.56), lag_1w_bookings (~0.49), and lag_52w_bookings (~0.48) show the highest positive correlation with weekly bookings.
+
+Calendar effects are meaningful but secondary - 
+
+- is_bank_holiday_week (~0.39) and is_peak_winter (~0.21) show moderate positive relationships with bookings.
+- This aligns with observed holiday uplift and winter seasonality patterns.
+
+Weather variables show weaker direct correlations - 
+
+- Individual weather measures (temperature, precipitation, wind speed, visibility) have relatively low linear correlation with bookings.
+- This suggests weather influences demand indirectly or in combination with seasonality, rather than acting as a dominant linear driver on its own.
+
+**Interpretation for Modelling**
+
+These findings informed feature selection and modelling decisions:
+
+- Lagged demand features were treated as core predictors in the regression model.
+- Calendar variables were included as supporting features rather than primary drivers.
+- Weather severity bins and scenario-based inputs were preferred over relying solely on raw weather variables.
+
+This correlation analysis helped guide the final modelling strategy and contributed to improved forecast stability in the refined synthetic dataset.
+
+---
+
 ## 5. Modelling & Evaluation
 
 ### 5.1 ML Business Case – Weekly Bookings Forecast (Regression)
@@ -713,7 +749,11 @@ It is explicitly designed as a safe, isolated prototype that cannot affect the p
 
 ## 6. Dashboard Design & Data Visualisation
 
-The dashboard was designed with a strong focus on clarity, accessibility, and user experience. A custom CSS layer was applied to create a consistent visual identity aligned with the project theme, including reuse of the project logo from Portfolio Project 4 to maintain continuity across the portfolio. Emojis were intentionally used within page titles and navigation to provide quick visual cues, improve scannability, and enhance accessibility for non-technical users, while remaining fully compatible with Streamlit’s native components. Data visualisations prioritise readability and interpretability through clear labelling, restrained colour usage, and contextual annotations, ensuring insights can be understood quickly by both technical and non-technical stakeholders.
+The dashboard was designed with a strong focus on clarity, accessibility, and user experience. A custom CSS layer was applied to create a consistent visual identity aligned with the project theme, including reuse of the project logo from Portfolio Project 4 to maintain continuity across the portfolio. Emojis were deliberately used within page titles and navigation elements to provide clear visual cues, improve scannability, and support accessibility for non-technical users. They integrate seamlessly with Streamlit’s native components, require no additional dependencies, and render consistently across environments.
+
+I explored alternative icon libraries (such as Font Awesome) during development, however, emojis were ultimately retained as they achieved the desired visual emphasis with less complexity and proved more effective for quickly conveying page intent in a data dashboard context. 
+
+Data visualisations prioritise readability and interpretability through clear labelling, restrained colour usage, and contextual annotations, ensuring insights can be understood quickly by both technical and non-technical stakeholders.
 
 ### 6.1 Dashboard Pages
 
